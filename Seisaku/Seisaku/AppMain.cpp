@@ -1,4 +1,5 @@
 #include "DxLib.h"
+#include "Player.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -10,6 +11,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 		{
 			return -1;
 		}
+
+		Player_Update();
+
 		WaitKey();
 	
 		DxLib_End();
