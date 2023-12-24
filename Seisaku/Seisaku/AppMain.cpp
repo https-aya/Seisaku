@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "Player.h"
+#include "Enemy.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -12,9 +13,21 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 			return -1;
 		}
 
-		Player_Update();
+		SetDrawScreen(DX_SCREEN_BACK);
 
-		WaitKey();
+		Player_Initialize();
+		Enemy_Initialize();
+
+		while (ProcessMessage() != -1)
+		{
+			ClearDrawScreen();
+
+			Player_Update();
+
+			Enemy_Update();
+
+			ScreenFlip();
+		}
 	
 		DxLib_End();
 
