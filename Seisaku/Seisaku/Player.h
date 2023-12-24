@@ -1,9 +1,9 @@
 #pragma once
 
 
-#define FieldWide	(8)
-#define FieldHight	(12)
-#define TroutSize	(480/FieldHight)
+#define FieldWide	(12)
+#define FieldHight	(18)
+#define TroutSize	(720/FieldHight)
 
 enum FieldState
 {

@@ -18,8 +18,8 @@ int image;
 
 void Player_Initialize()	//èâä˙âªèàóù
 {
-	PlayerX = 140;
-	PlayerY = 420;
+	PlayerX = 220;
+	PlayerY = 660;
 	Field_Create();
 	image = LoadGraph("image/kougeki.png");
 }
@@ -125,10 +125,10 @@ void CheckDamage()
 void Field_Draw()
 {
 	float i,j;
-	DrawBoxAA(0, 0, TroutSize * FieldWide, 480, 0xffffff, FALSE, 0.5f);
+	DrawBoxAA(0, 0, TroutSize * FieldWide, 720, 0xffffff, FALSE, 0.5f);
 	for (i = 1; i < FieldWide; i++)
 	{
-		DrawLineAA((i * TroutSize), 0, (i * TroutSize), 480, 0xffffff, 1.0f);
+		DrawLineAA((i * TroutSize), 0, (i * TroutSize), 720, 0xffffff, 1.0f);
 	}
 	for (i = 1; i < FieldHight; i++)
 	{

@@ -46,8 +46,8 @@ void Enemy_Update()
 				}
 				times = 0;
 			}
-			DrawFormatString(400, 50 + (20 * k), 0xffffff, "%d", enemy[k].HP);
-			DrawFormatString(420, 50 + (20 * k), 0xffffff, "%f", enemy[k].EnemyY);
+			//DrawFormatString(500, 50 + (20 * k), 0xffffff, "%d", enemy[k].HP);
+			//DrawFormatString(520, 50 + (20 * k), 0xffffff, "%f", enemy[k].EnemyY);
 		}
 	}
 	Enemy_Draw();
@@ -71,7 +71,7 @@ void Enemy_Create()
 	int k;
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
-		k = rand() % 7;
+		k = rand() % 11;
 		enemy[i].EnemyX = 20 + (TroutSize * k);
 		enemy[i].EnemyY = 20;
 		enemy[i].HP = 1;
