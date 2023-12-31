@@ -132,12 +132,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AppMain.cpp" />
+    <ClCompile Include="Castle.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="InputControl.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Castle.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Field.h" />
     <ClInclude Include="InputControl.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>

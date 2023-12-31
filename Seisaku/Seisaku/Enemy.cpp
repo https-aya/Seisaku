@@ -1,11 +1,12 @@
 #include "Enemy.h"
-#include "Player.h"
+#include "Field.h"
+#include "Castle.h"
 #include "DxLib.h"
 #include "time.h"
 
 
 
-#define WaitTime  (200)
+#define WaitTime  (100)
 
 struct EnemyPattern
 {
@@ -16,17 +17,13 @@ struct EnemyPattern
 	int HP;
 };
 EnemyPattern enemy[MAX_ENEMY];
-int times;
-int EnemyTimes;
 
 void Enemy_Initialize()
 {
 	Enemy_Create();
-	times = 0;
-	EnemyTimes = 0;
 	for (int k = 0; k < MAX_ENEMY; k++)
 	{
-		enemy[k].Wait = rand() % 4;
+		enemy[k].Wait = 0;
 	}
 }
 
@@ -36,18 +33,23 @@ void Enemy_Update()
 	{
 		if(enemy[k].HP > 0)
 		{
-			times++;
-			if (times > WaitTime)
+			enemy[k].Wait++;
+			if (enemy[k].Wait > WaitTime)
 			{
-				if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+				if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == true)
+				{
+					Castle_Damage();
+					enemy[k].HP--;
+				}
+				else if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
 				{
 					Enemy_MoveField();
 					enemy[k].EnemyY += TroutSize;
 				}
-				times = 0;
+				enemy[k].Wait = 0;
 			}
 			//DrawFormatString(500, 50 + (20 * k), 0xffffff, "%d", enemy[k].HP);
-			//DrawFormatString(520, 50 + (20 * k), 0xffffff, "%f", enemy[k].EnemyY);
+			/*DrawFormatString(520, 50 + (20 * k), 0xffffff, "%f", enemy[k].EnemyX);*/
 		}
 	}
 	Enemy_Draw();
@@ -60,6 +62,7 @@ void Enemy_Draw()
 		if (enemy[k].HP > 0)
 		{
 			DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xff0000, TRUE);
+			Enemy_Field(k);
 		}
 	}
 }
@@ -67,7 +70,6 @@ void Enemy_Draw()
 void Enemy_Create()
 {
 	srand((unsigned)time(NULL));
-	EnemyTimes = 5;
 	int k;
 	for (int i = 0; i < MAX_ENEMY; i++)
 	{
@@ -75,6 +77,14 @@ void Enemy_Create()
 		enemy[i].EnemyX = 20 + (TroutSize * k);
 		enemy[i].EnemyY = 20;
 		enemy[i].HP = 1;
+		if (Check_Enemy(enemy[i].EnemyY / TroutSize, enemy[i].EnemyX / TroutSize) == true)
+		{
+			i--;
+		}
+		else
+		{
+			Enemy_Field(i);
+		}
 	}
 	Enemy_Draw();
 }

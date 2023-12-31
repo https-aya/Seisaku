@@ -1,6 +1,6 @@
 #pragma once
 
-#define MAX_ENEMY (5)
+#define MAX_ENEMY (10)
 
 enum EnemyType
 {
