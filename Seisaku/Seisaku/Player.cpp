@@ -2,6 +2,7 @@
 #include "Field.h"
 #include "InputControl.h"
 #include "io.h"
+#include "Skil.h"
 #include "DxLib.h"
 
 float PlayerX;
@@ -27,6 +28,10 @@ void Player_Update()		//XVˆ—
 	{
 		DrawGraph(PlayerX - 20, PlayerY - 60, image, TRUE);
 		Player_Attack();
+	}
+	if (InputControl::GetKeyDown(KEY_INPUT_K) == true)
+	{
+		Skil_On();
 	}
 }
 void Player_Move()			//ˆÚ“®ˆ—

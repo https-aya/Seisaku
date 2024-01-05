@@ -1,6 +1,7 @@
 #include "DxLib.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Skil.h"
 #include "Castle.h"
 
 #define SCREEN_HEIGHT (720)
@@ -25,6 +26,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 		Castle_Initialize();
 		Player_Initialize();
 		Enemy_Initialize();
+		Skil_Initialize();
+
 
 		while ( Castle_GetHp() != 0)
 		{
@@ -35,6 +38,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 			Enemy_Update();
 
 			Castle_Update();
+
+			Skil_Update();
 
 			ScreenFlip();
 		}

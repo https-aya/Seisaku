@@ -137,6 +137,7 @@
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="InputControl.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Skil.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Castle.h" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Field.h" />
     <ClInclude Include="InputControl.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Skil.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
