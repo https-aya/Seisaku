@@ -86,6 +86,10 @@ void Player_Draw()
 void Player_Attack()
 {
 	CheckDamage();
+	if (GetSkilnum() == 1 && GetSkil() != 0)
+	{
+		Skil_Off();
+	}
 }
 
 float Player_GetX()

@@ -1,8 +1,6 @@
 #include "DxLib.h"
-#include "Player.h"
-#include "Enemy.h"
-#include "Skil.h"
 #include "Castle.h"
+#include "SceneManager.h"
 
 #define SCREEN_HEIGHT (720)
 #define SCREEN_WIDTH (1280)
@@ -23,23 +21,16 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 
 		SetDrawScreen(DX_SCREEN_BACK);
 
-		Castle_Initialize();
-		Player_Initialize();
-		Enemy_Initialize();
-		Skil_Initialize();
+		SceneManager_Initialize(E_TITLE);
 
 
-		while ( Castle_GetHp() != 0)
+		while (ErrorCheck() == D_NORMALITY)
 		{
 			ClearDrawScreen();
 
-			Player_Update();
+			SceneManager_Update();
 
-			Enemy_Update();
-
-			Castle_Update();
-
-			Skil_Update();
+			SceneManager_Draw();
 
 			ScreenFlip();
 		}

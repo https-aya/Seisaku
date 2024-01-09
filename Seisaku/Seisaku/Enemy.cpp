@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Field.h"
 #include "Castle.h"
+#include "Skil.h"
 #include "DxLib.h"
 #include "time.h"
 
@@ -29,27 +30,45 @@ void Enemy_Initialize()
 
 void Enemy_Update()
 {
-	for (int k = 0; k < MAX_ENEMY; k++)
+	if (GetSkilnum() == 1 && GetSkil() != 0)
 	{
-		if(enemy[k].HP > 0)
+		for (int k = 0; k < MAX_ENEMY; k++)
 		{
-			enemy[k].Wait++;
-			if (enemy[k].Wait > WaitTime)
+			enemy[k].Wait = 0;
+		}
+	}
+	else
+	{
+		for (int k = 0; k < MAX_ENEMY; k++)
+		{
+			if (enemy[k].HP > 0)
 			{
-				if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == true)
+				enemy[k].Wait++;
+				if (enemy[k].Wait > WaitTime)
 				{
-					Castle_Damage();
-					enemy[k].HP--;
+					if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == true)
+					{
+						if (GetSkil() != 0)
+						{
+							enemy[k].HP--;
+							Skil_Off();
+						}
+						else
+						{
+							Castle_Damage();
+							enemy[k].HP--;
+						}
+					}
+					else if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+					{
+						Enemy_MoveField();
+						enemy[k].EnemyY += TroutSize;
+					}
+					enemy[k].Wait = 0;
 				}
-				else if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
-				{
-					Enemy_MoveField();
-					enemy[k].EnemyY += TroutSize;
-				}
-				enemy[k].Wait = 0;
+				//DrawFormatString(500, 50 + (20 * k), 0xffffff, "%d", enemy[k].HP);
+				/*DrawFormatString(520, 50 + (20 * k), 0xffffff, "%f", enemy[k].EnemyX);*/
 			}
-			//DrawFormatString(500, 50 + (20 * k), 0xffffff, "%d", enemy[k].HP);
-			/*DrawFormatString(520, 50 + (20 * k), 0xffffff, "%f", enemy[k].EnemyX);*/
 		}
 	}
 	Enemy_Draw();
