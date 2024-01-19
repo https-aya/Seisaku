@@ -1,6 +1,5 @@
 #pragma once
 
-
 #define FieldWide	(12)
 #define FieldHight	(18)
 #define TroutSize	(720/FieldHight)
@@ -12,4 +11,7 @@ void Player_Draw();					//描画処理
 void Player_Attack();				//攻撃処理
 float Player_GetX();				//X座標取得処理
 float Player_GetY();				//Y座標取得処理
-
+void ScoreUP();						//スコアアップ処理
+int Get_Score();					//スコア取得処理
+void ARLv_Up();
+int Get_ARLv();

@@ -1,4 +1,4 @@
 #pragma once
 
-int GameMainScene_Initialize();
-void GameMainScene_Update();
+int GameMainScene_Initialize();		//‰Šú‰»ˆ—
+void GameMainScene_Update();		//XVˆ—

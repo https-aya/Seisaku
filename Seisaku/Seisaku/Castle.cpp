@@ -9,12 +9,14 @@ int Castle;
 int HP_G;
 int HP_Y;
 int HP_R;
+int wave;
 
 void Castle_Initialize()
 {
 	CastleX = 0;
 	CastleY = 680;
 	CastleHP = 10;
+	wave = 1;
 	Castle = LoadGraph("image/jouheki.png");
 	HP_G = LoadGraph("image/hp_g.png");
 	HP_Y = LoadGraph("image/hp_y.png");
@@ -70,4 +72,14 @@ void Castle_Damage()
 int Castle_GetHp()
 {
 	return CastleHP;
+}
+
+void WaveUp()
+{
+	wave++;
+}
+
+int Get_Wave()
+{
+	return wave;
 }

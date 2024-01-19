@@ -2,7 +2,9 @@
 #include "TitleScene.h"
 #include "EndScene.h"
 #include "GameMainScene.h"
+#include "RankingScene.h"
 #include "Skil.h"
+#include "Player.h"
 #include "DxLib.h"
 
 GAME_MODE game_mode;
@@ -24,6 +26,19 @@ void SceneManager_Initialize(GAME_MODE mode)
 
 	case E_SKIL:
 		read_error = Skil_ChangeInitialize();
+		break;
+
+	case E_RANKING:
+		if (game_mode == E_GAMEMAIN)
+		{
+			Set_RankingMode(RANKING_INPUT_MODE);		//ランキング入力モード
+			Set_RankingScore(Get_Score());				//スコアの取得
+		}
+		else
+		{
+			Set_RankingMode(RANKING_DISP_MODE);			//ランキング描画モードで起動
+		}
+		read_error = RankingScene_Initialize();		//ランキング画面の初期化
 		break;
 
 	case E_END:
@@ -55,6 +70,10 @@ void SceneManager_Update()
 		Skil_ChangeUpdate();
 		break;
 
+	case E_RANKING:
+		RankingScene_Update();
+		break;
+
 	case E_END:
 	default:
 		EndScene_Update();
@@ -72,6 +91,10 @@ void SceneManager_Draw()
 
 	case E_SKIL:
 		Skil_ChangeDraw();
+		break;
+
+	case E_RANKING:
+		RankingScene_Draw();
 		break;
 
 	case E_END:

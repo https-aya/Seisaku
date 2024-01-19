@@ -1,6 +1,6 @@
-#pragma once
+﻿#pragma once
 
-#define MAX_ENEMY (10)
+#define MAX_ENEMY (2)
 
 enum EnemyType
 {
@@ -14,11 +14,16 @@ enum EnemyType
 	E_ZIGZAG
 };
 
-void Enemy_Initialize();
-void Enemy_Update();
-void Enemy_Draw();
-void Enemy_Create();
-void Enemy_HP(int n);
-int Enemy_GetHP(int n);
-float Enemy_GetX(int n);
-float Enemy_GetY(int n);
+
+void Enemy_Initialize();		//初期化処理
+void Enemy_Update();			//更新処理
+void Enemy_Draw();				//描画処理
+void Enemy_Create();			//生成処理
+void Enemy_HP(int n);			//HP減少処理
+int Enemy_GetHP(int n);			//㏋取得処理
+float Enemy_GetX(int n);		//X座標取得処理
+float Enemy_GetY(int n);		//Y座標取得処理
+void EnemykillUp();				//キルカウント
+int GetEnemykill();				//キルカウント取得処理
+void MAXWAVEUp();
+int GetMAXWAVE();

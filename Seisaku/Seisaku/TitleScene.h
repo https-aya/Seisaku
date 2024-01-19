@@ -1,5 +1,5 @@
 #pragma once
 
-int TitleScene_Initialize();
-void TitleScene_Update();
-void TitleScene_Draw();
+int TitleScene_Initialize();		//‰Šú‰»ˆ—
+void TitleScene_Update();			//XVˆ—
+void TitleScene_Draw();				//•`‰æˆ—

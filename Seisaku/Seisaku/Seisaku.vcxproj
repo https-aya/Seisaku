@@ -139,6 +139,7 @@
     <ClCompile Include="GameMainScene.cpp" />
     <ClCompile Include="InputControl.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RankingScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Skil.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="GameMainScene.h" />
     <ClInclude Include="InputControl.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RankingScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Skil.h" />
     <ClInclude Include="TitleScene.h" />

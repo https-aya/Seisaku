@@ -10,11 +10,15 @@ float PlayerY;
 int PfieldH;
 int PfieldW;
 int image;
+int score;
+int ARLv;
 
 void Player_Initialize()	//‰Šú‰»ˆ—
 {
 	PlayerX = 220;
 	PlayerY = 660;
+	score = 0;
+	ARLv = 0;
 	Field_Create();
 	image = LoadGraph("image/kougeki.png");
 }
@@ -100,4 +104,27 @@ float Player_GetX()
 float Player_GetY()
 {
 	return PlayerY;
+}
+
+void ScoreUP()
+{
+	score += 50;
+}
+
+int Get_Score()
+{
+	return score;
+}
+
+void ARLv_Up()
+{
+	if (ARLv < 5)
+	{
+		ARLv++;
+	}
+}
+
+int Get_ARLv()
+{
+	return ARLv;
 }

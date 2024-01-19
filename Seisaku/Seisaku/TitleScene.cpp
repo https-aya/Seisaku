@@ -26,6 +26,9 @@ void TitleScene_Update()
 			Change_Scene(E_SKIL);
 			break;
 		case 2:
+			Change_Scene(E_RANKING);
+			break;
+		case 3:
 		default:
 			Change_Scene(E_END);
 			break;
@@ -46,9 +49,9 @@ void TitleScene_Update()
 
 	if (InputControl::GetKeyDown(KEY_INPUT_S) == true)
 	{
-		if (cursor_number >= 2)
+		if (cursor_number >= 3)
 		{
-			cursor_number = 2;
+			cursor_number = 3;
 		}
 		else
 		{
@@ -59,8 +62,40 @@ void TitleScene_Update()
 
 void TitleScene_Draw()
 {
-	DrawFormatString(340, 340, 0xffffff, "GAME START");
-	DrawFormatString(340, 380, 0xffffff, "SKIL CHANGE");
-	DrawFormatString(340, 420, 0xffffff, "END");
-	DrawCircle(320, 345 + (cursor_number * 40), 10, GetColor(255, 0, 0));
+	switch (cursor_number)
+	{
+	case 0:
+		SetFontSize(20);
+		DrawFormatString(340, 340, 0xffffff, "GAME START");
+		SetFontSize(16);
+		DrawFormatString(340, 380, 0xffffff, "SKIL CHANGE");
+		DrawFormatString(340, 420, 0xffffff, "RANKING");
+		DrawFormatString(340, 460, 0xffffff, "END");
+		break;
+	case 1:
+		SetFontSize(20);
+		DrawFormatString(340, 380, 0xffffff, "SKIL CHANGE");
+		SetFontSize(16);
+		DrawFormatString(340, 340, 0xffffff, "GAME START");	
+		DrawFormatString(340, 420, 0xffffff, "RANKING");
+		DrawFormatString(340, 460, 0xffffff, "END");
+		break;
+	case 2:
+		SetFontSize(20);
+		DrawFormatString(340, 420, 0xffffff, "RANKING");
+		SetFontSize(16);
+		DrawFormatString(340, 340, 0xffffff, "GAME START");
+		DrawFormatString(340, 380, 0xffffff, "SKIL CHANGE");
+		DrawFormatString(340, 460, 0xffffff, "END");
+		break;
+	case 3:
+		SetFontSize(20);
+		DrawFormatString(340, 460, 0xffffff, "END");
+		SetFontSize(16);
+		DrawFormatString(340, 340, 0xffffff, "GAME START");
+		DrawFormatString(340, 380, 0xffffff, "SKIL CHANGE");
+		DrawFormatString(340, 420, 0xffffff, "RANKING");
+		break;
+	}
+	
 }
