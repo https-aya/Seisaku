@@ -5,6 +5,8 @@
 #include "Skil.h"
 #include "DxLib.h"
 
+#define SkilCount (600)
+
 float PlayerX;
 float PlayerY;
 int PfieldH;
@@ -12,6 +14,8 @@ int PfieldW;
 int image;
 int score;
 int ARLv;
+float skillife;
+float skilspan;
 
 void Player_Initialize()	//‰Šú‰»ˆ—
 {
@@ -19,6 +23,8 @@ void Player_Initialize()	//‰Šú‰»ˆ—
 	PlayerY = 660;
 	score = 0;
 	ARLv = 0;
+	skillife = 0;
+	skilspan = 0;
 	Field_Create();
 	image = LoadGraph("image/kougeki.png");
 }
@@ -33,9 +39,23 @@ void Player_Update()		//XVˆ—
 		DrawGraph(PlayerX - 20, PlayerY - 60, image, TRUE);
 		Player_Attack();
 	}
-	if (InputControl::GetKeyDown(KEY_INPUT_K) == true)
+	if (InputControl::GetKeyDown(KEY_INPUT_K) == true && skilspan <= 0)
 	{
 		Skil_On();
+		skilspan = 600;
+	}
+	if (GetSkil() == 1)
+	{
+		skillife++;
+		if (skillife >= SkilCount)
+		{
+			Skil_Off();
+			skillife = 0;
+		}
+	}
+	if (GetSkil() == 0 && skilspan > 0)
+	{
+		skilspan--;
 	}
 }
 void Player_Move()			//ˆÚ“®ˆ—
@@ -84,16 +104,12 @@ void Player_Draw()
 	PfieldW = PlayerX / TroutSize;
 	Player_Field();
 	DrawCircleAA(PlayerX, PlayerY, TroutSize / 2, 100, 0xffffff, TRUE);
-	DrawFormatString(PfieldW * TroutSize, PfieldH * TroutSize, 0xffffff, "1");
+	DrawFormatString(500,50, 0xffffff, "%0.0f",skilspan/10);
 }
 
 void Player_Attack()
 {
 	CheckDamage();
-	if (GetSkilnum() == 1 && GetSkil() != 0)
-	{
-		Skil_Off();
-	}
 }
 
 float Player_GetX()

@@ -110,8 +110,8 @@ void Enemy_Update()
 					
 					enemy[k].Wait = 0;
 				}
-				DrawFormatString(500, 50 + (20 * k), 0xffffff, "%d", k);
-				DrawFormatString(520, 50 + (20 * k), 0xffffff, "%f", enemy[k].EnemyX);
+				/*DrawFormatString(500, 50 + (20 * k), 0xffffff, "%d", k);
+				DrawFormatString(520, 50 + (20 * k), 0xffffff, "%f", enemy[k].EnemyX);*/
 			}
 		}
 	}

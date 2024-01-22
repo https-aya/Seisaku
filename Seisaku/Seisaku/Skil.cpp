@@ -7,12 +7,13 @@
 int skil;
 int skilnum;
 int gard;
-using namespace std;
+int timeimage;
 
 void Skil_Initialize()
 {
 	skil = 0;
 	gard = LoadGraph("image/gard.png");
+	timeimage = LoadGraph("image/NewTime.png");
 }
 
 void Skil_Update()
@@ -28,7 +29,7 @@ void Skil_Update()
 		}
 		if (skilnum == 1)
 		{
-
+			DrawGraph(500, 500, timeimage, TRUE);
 		}
 
 	}
