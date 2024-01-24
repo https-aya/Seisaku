@@ -8,12 +8,14 @@ int skil;
 int skilnum;
 int gard;
 int timeimage;
+float timeangle;
 
 void Skil_Initialize()
 {
 	skil = 0;
 	gard = LoadGraph("image/gard.png");
 	timeimage = LoadGraph("image/NewTime.png");
+	timeangle = 0.0f;
 }
 
 void Skil_Update()
@@ -29,7 +31,8 @@ void Skil_Update()
 		}
 		if (skilnum == 1)
 		{
-			DrawGraph(500, 500, timeimage, TRUE);
+			timeangle += DX_PI_F / 48.0f;
+			DrawRotaGraph(550, 500,1.0,timeangle, timeimage, TRUE);
 		}
 
 	}
