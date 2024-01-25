@@ -66,7 +66,7 @@ void TitleScene_Draw()
 	{
 	case 0:
 		SetFontSize(20);
-		DrawFormatString(340, 340, 0xffffff, "GAME START");
+		DrawFormatString(340, 340, 0xff0000, "GAME START");
 		SetFontSize(16);
 		DrawFormatString(340, 380, 0xffffff, "SKIL CHANGE");
 		DrawFormatString(340, 420, 0xffffff, "RANKING");
@@ -74,7 +74,7 @@ void TitleScene_Draw()
 		break;
 	case 1:
 		SetFontSize(20);
-		DrawFormatString(340, 380, 0xffffff, "SKIL CHANGE");
+		DrawFormatString(340, 380, 0xff0000, "SKIL CHANGE");
 		SetFontSize(16);
 		DrawFormatString(340, 340, 0xffffff, "GAME START");	
 		DrawFormatString(340, 420, 0xffffff, "RANKING");
@@ -82,7 +82,7 @@ void TitleScene_Draw()
 		break;
 	case 2:
 		SetFontSize(20);
-		DrawFormatString(340, 420, 0xffffff, "RANKING");
+		DrawFormatString(340, 420, 0xff0000, "RANKING");
 		SetFontSize(16);
 		DrawFormatString(340, 340, 0xffffff, "GAME START");
 		DrawFormatString(340, 380, 0xffffff, "SKIL CHANGE");
@@ -90,7 +90,7 @@ void TitleScene_Draw()
 		break;
 	case 3:
 		SetFontSize(20);
-		DrawFormatString(340, 460, 0xffffff, "END");
+		DrawFormatString(340, 460, 0xff0000, "END");
 		SetFontSize(16);
 		DrawFormatString(340, 340, 0xffffff, "GAME START");
 		DrawFormatString(340, 380, 0xffffff, "SKIL CHANGE");

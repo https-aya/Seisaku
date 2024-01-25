@@ -14,8 +14,10 @@ int PfieldW;
 int image;
 int score;
 int ARLv;
+int ASLv;
 float skillife;
 float skilspan;
+float attackspan;
 
 void Player_Initialize()	//初期化処理
 {
@@ -23,8 +25,10 @@ void Player_Initialize()	//初期化処理
 	PlayerY = 660;
 	score = 0;
 	ARLv = 0;
+	ASLv = 0;
 	skillife = 0;
 	skilspan = 0;
+	attackspan = 0;
 	Field_Create();
 	image = LoadGraph("image/kougeki.png");
 }
@@ -34,10 +38,15 @@ void Player_Update()		//更新処理
 	InputControl::Update();
 	Player_Move();
 	Player_Draw();
-	if (InputControl::GetKeyDown(KEY_INPUT_J) == true)
+	if (InputControl::GetKeyDown(KEY_INPUT_J) == true && attackspan <= 0)
+	{
+		Player_Attack();
+		attackspan = 300 - (ASLv * 20);
+	}
+	if (attackspan > 0)
 	{
 		DrawGraph(PlayerX - 20, PlayerY - 60, image, TRUE);
-		Player_Attack();
+		attackspan--;
 	}
 	if (InputControl::GetKeyDown(KEY_INPUT_K) == true && skilspan <= 0)
 	{
@@ -61,7 +70,7 @@ void Player_Update()		//更新処理
 void Player_Move()			//移動処理
 {
 
-	if (InputControl::GetKeyDown(KEY_INPUT_A) == true)
+	if (InputControl::GetKeyDown(KEY_INPUT_A) == true && attackspan <= 0)
 	{
 		if (check_overlap(PfieldW - 1, PfieldH) == TRUE
 			&& PlayerX - TroutSize >= 0)
@@ -71,7 +80,7 @@ void Player_Move()			//移動処理
 		}
 
 	}
-	if (InputControl::GetKeyDown(KEY_INPUT_D) == true)
+	if (InputControl::GetKeyDown(KEY_INPUT_D) == true && attackspan <= 0)
 	{
 		if (check_overlap(PfieldW + 1, PfieldH) == TRUE)
 		{
@@ -79,7 +88,7 @@ void Player_Move()			//移動処理
 			PlayerX += TroutSize;
 		}
 	}
-	if (InputControl::GetKeyDown(KEY_INPUT_W) == true)
+	if (InputControl::GetKeyDown(KEY_INPUT_W) == true && attackspan <= 0)
 	{
 		if (check_overlap(PfieldW, PfieldH - 1) == TRUE
 			&& PlayerY - TroutSize >= 0)
@@ -88,7 +97,7 @@ void Player_Move()			//移動処理
 			PlayerY -= TroutSize;
 		}
 	}
-	if (InputControl::GetKeyDown(KEY_INPUT_S) == true)
+	if (InputControl::GetKeyDown(KEY_INPUT_S) == true && attackspan <= 0)
 	{
 		if (check_overlap(PfieldW, PfieldH + 1) == TRUE)
 		{

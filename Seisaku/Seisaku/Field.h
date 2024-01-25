@@ -23,4 +23,4 @@ void Enemy_Field(int n);			//敵フィールド判定生成
 int Check_Enemy(int h, int w);		//敵生成時重なり判定
 void Player_MoveField();			//敵移動後フィールド処理
 void Player_Field();				//プレイヤーフィールド判定生成
-
+void EnemyDamage(int n);

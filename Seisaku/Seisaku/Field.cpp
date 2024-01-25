@@ -14,7 +14,7 @@ int EFW;
 
 void CheckDamage()
 {
-	for (int n = 0; n < MAX_ENEMY * Get_Wave(); n++)
+	for (int n = 0; n < MAX_ENEMY * GetMAXWAVE(); n++)
 	{
 		EFH = Enemy_GetY(n) / TroutSize;
 		EFW = Enemy_GetX(n) / TroutSize;
@@ -23,30 +23,104 @@ void CheckDamage()
 		case 0:
 			if (Field[EFH + 1][EFW] == E_Player)
 			{
-				Enemy_HP(n);
-				if (Enemy_GetHP(n) == 0)
-				{
-					ScoreUP();
-					EnemykillUp();
-					Field[EFH][EFW] = E_Empty;
-				}
+				EnemyDamage(n);
 			}
 			break;
-
 		case 1:
-		default:
-			if (Field[EFH + 1][EFW] == E_Player || Field[EFH + 1][EFW + 1] == E_Player || Field[EFH + 1][EFW - 1] == E_Player)
+			if (Field[EFH + 1][EFW] == E_Player ||
+				Field[EFH + 1][EFW + 1] == E_Player ||
+				Field[EFH + 1][EFW - 1] == E_Player)
 			{
-				Enemy_HP(n);
-				if (Enemy_GetHP(n) == 0)
+				EnemyDamage(n);
+			}
+			break;
+		case 2:
+			if (EFW > 0)
+			{
+				if (Field[EFH][EFW - 1] == E_Player)
 				{
-					ScoreUP();
-					EnemykillUp();
-					Field[EFH][EFW] = E_Empty;
+					EnemyDamage(n);
+					break;
 				}
 			}
-		}
+			if (Field[EFH + 1][EFW] == E_Player ||
+				Field[EFH + 1][EFW + 1] == E_Player ||
+				Field[EFH + 1][EFW - 1] == E_Player ||
+				Field[EFH][EFW + 1] == E_Player)
+			{
+				EnemyDamage(n);
+			}
+			break;
+		case 3:
+			if (EFH > 0)
+			{
+				if (EFW > 0)
+				{
+					if (Field[EFH - 1][EFW - 1] == E_Player)
+					{
+						EnemyDamage(n);
+						break;
+					}
+				}
+				if (Field[EFH - 1][EFW + 1] == E_Player)
+				{
+					EnemyDamage(n);
+					break;
+				}
+			}
+			if (EFW > 0)
+			{
+				if (Field[EFH][EFW - 1] == E_Player)
+				{
+					EnemyDamage(n);
+					break;
+				}
+			}
+			if (Field[EFH + 1][EFW] == E_Player ||
+				Field[EFH + 1][EFW + 1] == E_Player ||
+				Field[EFH + 1][EFW - 1] == E_Player ||
+				Field[EFH][EFW + 1] == E_Player)
+			{
+				EnemyDamage(n);
+			}
+			break;
+		case 4:
+		default:
+			if (EFH > 0)
+			{
+				if (EFW > 0)
+				{
+					if (Field[EFH - 1][EFW - 1] == E_Player)
+					{
+						EnemyDamage(n);
+						break;
+					}
+				}
+				if (Field[EFH - 1][EFW + 1] == E_Player ||
+					Field[EFH - 1][EFW] == E_Player)
+				{
+					EnemyDamage(n);
+					break;
+				}
+			}
+			if (EFW > 0)
+			{
+				if (Field[EFH][EFW - 1] == E_Player)
+				{
+					EnemyDamage(n);
+					break;
+				}
+			}
+			if (Field[EFH + 1][EFW] == E_Player ||
+				Field[EFH + 1][EFW + 1] == E_Player ||
+				Field[EFH + 1][EFW - 1] == E_Player ||
+				Field[EFH][EFW + 1] == E_Player)
+			{
+				EnemyDamage(n);
+			}
+			break;
 		
+		}
 	}
 }
 
@@ -158,4 +232,15 @@ void Player_Field()
 	PFH = Player_GetY() / TroutSize;
 	PFW = Player_GetX() / TroutSize;
 	Field[PFH][PFW] = E_Player;
+}
+
+void EnemyDamage(int n)
+{
+	Enemy_HP(n);
+	if (Enemy_GetHP(n) == 0)
+	{
+		ScoreUP();
+		EnemykillUp();
+		Field[EFH][EFW] = E_Empty;
+	}
 }
