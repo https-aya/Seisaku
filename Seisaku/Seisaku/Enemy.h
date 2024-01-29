@@ -25,5 +25,4 @@ float Enemy_GetX(int n);		//X座標取得処理
 float Enemy_GetY(int n);		//Y座標取得処理
 void EnemykillUp();				//キルカウント
 int GetEnemykill();				//キルカウント取得処理
-void MAXWAVEUp();
-int GetMAXWAVE();
+void CastleHit(int k);

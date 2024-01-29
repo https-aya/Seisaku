@@ -5,8 +5,11 @@
 #include "Skil.h"
 #include "DxLib.h"
 
+int WaveCount;
+
 int GameMainScene_Initialize()
 {
+	WaveCount = 1;
 	Castle_Initialize();
 	Player_Initialize();
 	Enemy_Initialize();
@@ -20,11 +23,10 @@ void GameMainScene_Update()
 	Castle_Update();
 	Skil_Update();
 	DrawFormatString(800, 200, 0xffffff, "%d", Get_Score(), TRUE);
-	DrawFormatString(800, 240, 0xffffff, "%d", Get_Wave(), TRUE);
-	if (GetEnemykill() >= MAX_ENEMY * GetMAXWAVE())
+	DrawFormatString(800, 240, 0xffffff, "%d", WaveCount, TRUE);
+	if (GetEnemykill() >= MAX_ENEMY * Get_Wave())
 	{
 		WaveUp();
-		MAXWAVEUp();
 		ARLv_Up();
 		Enemy_Initialize();
 	}

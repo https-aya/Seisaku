@@ -22,19 +22,20 @@ void Skil_Update()
 {
 	if (skil != 0)
 	{
-		if (skilnum == 0)
+		switch (skilnum)
 		{
+		case 0:
 			for (int i = 0; i < FieldWide; i++)
 			{
 				DrawGraph(0 + (TroutSize * i), 680, gard, TRUE);
 			}
-		}
-		if (skilnum == 1)
-		{
-			timeangle += DX_PI_F / 48.0f;
-			DrawRotaGraph(550, 500,1.0,timeangle, timeimage, TRUE);
-		}
+			break;
 
+		case 1:
+			timeangle += DX_PI_F / 48.0f;
+			DrawRotaGraph(550, 500, 1.0, timeangle, timeimage, TRUE);
+			break;
+		}
 	}
 }
 

@@ -18,13 +18,12 @@ struct EnemyPattern
 };
 EnemyPattern enemy[10];
 int enemykill;
-int maxwave = 1;
 
 void Enemy_Initialize()
 {
 	enemykill = 0;
 	Enemy_Create();
-	for (int k = 0; k < MAX_ENEMY * maxwave; k++)
+	for (int k = 0; k < MAX_ENEMY * Get_Wave(); k++)
 	{
 		enemy[k].Wait = 0;
 	}
@@ -34,14 +33,14 @@ void Enemy_Update()
 {
 	if (GetSkilnum() == 1 && GetSkil() != 0)
 	{
-		for (int k = 0; k < MAX_ENEMY * maxwave; k++)
+		for (int k = 0; k < MAX_ENEMY * Get_Wave(); k++)
 		{
 			enemy[k].Wait = 0;
 		}
 	}
 	else
 	{
-		for (int k = 0; k < MAX_ENEMY * maxwave; k++)
+		for (int k = 0; k < MAX_ENEMY * Get_Wave(); k++)
 		{
 			if (enemy[k].HP > 0)
 			{
@@ -51,26 +50,7 @@ void Enemy_Update()
 					switch (enemy[k].type)
 					{
 					case E_NOMAL:
-						if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == true)
-						{
-							if (GetSkil() != 0)
-							{
-								enemy[k].HP = 0;
-								EnemykillUp();
-								Skil_Off();
-							}
-							else
-							{
-								EnemykillUp();
-								Castle_Damage();
-								enemy[k].HP = 0;
-							}
-						}
-						else if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
-						{
-							Enemy_MoveField();
-							enemy[k].EnemyY += TroutSize;
-						}
+						CastleHit(k);
 						break;
 
 					case E_QUICK:
@@ -79,29 +59,8 @@ void Enemy_Update()
 						{
 							while (enemy[k].HP > 0)
 							{
-								if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == true)
-								{
-									if (GetSkil() != 0)
-									{
-										enemy[k].HP = 0;
-										EnemykillUp();
-										Skil_Off();
-									}
-									else
-									{
-										Castle_Damage();
-										EnemykillUp();
-										enemy[k].HP = 0;
-									}
-								}
-								else if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
-								{
-									Enemy_MoveField();
-									enemy[k].EnemyY += TroutSize;
-								}
-								else {
-									break;
-								}
+								CastleHit(k);
+								break;
 							}
 							enemy[k].waitcount = 0;
 						}
@@ -120,7 +79,7 @@ void Enemy_Update()
 
 void Enemy_Draw()
 {
-	for (int k = 0; k < MAX_ENEMY * maxwave; k++)
+	for (int k = 0; k < MAX_ENEMY * Get_Wave(); k++)
 	{
 		if (enemy[k].HP > 0)
 		{
@@ -153,7 +112,7 @@ void Enemy_Create()
 	srand((unsigned)time(NULL));
 	int k;
 	int j = 3;
-	for (int i = 0; i < MAX_ENEMY * maxwave; i++)
+	for (int i = 0; i < MAX_ENEMY * Get_Wave(); i++)
 	{
 		k = rand() % 11;
 		enemy[i].EnemyX = 20 + (TroutSize * k);
@@ -234,19 +193,26 @@ int GetEnemykill()
 	return enemykill;
 }
 
-void MAXWAVEUp()
+void CastleHit(int k)
 {
-	if (maxwave >= 5)
+	if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == true)
 	{
-		maxwave = 5;
+		if (GetSkil() != 0 && GetSkilnum() == 0)
+		{
+			enemy[k].HP = 0;
+			enemykill++;
+			Skil_Off();
+		}
+		else
+		{
+			enemy[k].HP = 0;
+			enemykill++;
+			Castle_Damage();
+		}
 	}
-	else
+	else if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
 	{
-		maxwave++;
+		Enemy_MoveField();
+		enemy[k].EnemyY += TroutSize;
 	}
-}
-
-int GetMAXWAVE()
-{
-	return maxwave;
 }

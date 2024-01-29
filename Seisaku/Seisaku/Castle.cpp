@@ -11,6 +11,7 @@ int HP_Y;
 int HP_R;
 int wave;
 
+
 void Castle_Initialize()
 {
 	CastleX = 0;
@@ -76,7 +77,10 @@ int Castle_GetHp()
 
 void WaveUp()
 {
-	wave++;
+	if (wave < 5)
+	{
+		wave++;
+	}
 }
 
 int Get_Wave()
