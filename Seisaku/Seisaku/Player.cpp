@@ -41,7 +41,7 @@ void Player_Update()		//XVˆ—
 	if (InputControl::GetKeyDown(KEY_INPUT_J) == true && attackspan <= 0)
 	{
 		Player_Attack();
-		attackspan = 300 - (ASLv * 20);
+		attackspan = 30 - (ASLv * 20);
 	}
 	if (attackspan > 0)
 	{

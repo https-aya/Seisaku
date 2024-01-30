@@ -2,3 +2,4 @@
 
 int GameMainScene_Initialize();		//‰Šú‰»ˆ—
 void GameMainScene_Update();		//XVˆ—
+void GameMainScene_Draw();			//•`‰æˆ—

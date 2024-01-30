@@ -14,7 +14,7 @@ int EFW;
 
 void CheckDamage()
 {
-	for (int n = 0; n < MAX_ENEMY * GetMAXWAVE(); n++)
+	for (int n = 0; n < MAX_ENEMY * Get_Wave(); n++)
 	{
 		EFH = Enemy_GetY(n) / TroutSize;
 		EFW = Enemy_GetX(n) / TroutSize;

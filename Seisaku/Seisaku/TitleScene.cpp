@@ -58,6 +58,11 @@ void TitleScene_Update()
 			cursor_number++;
 		}
 	}
+
+	if (InputControl::GetKeyDown(KEY_INPUT_ESCAPE) == true)
+	{
+		Change_Scene(E_END);
+	}
 }
 
 void TitleScene_Draw()
