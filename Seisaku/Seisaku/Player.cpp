@@ -14,13 +14,20 @@ int PfieldW;
 int image;
 int score;
 int ARLv;
+int ADLv;
 int ASLv;
 float skillife;
 float skilspan;
 float attackspan;
+int play;
+int AR_Image;
+int AS_Image;
+int cursor;
 
 void Player_Initialize()	//‰Šú‰»ˆ—
 {
+	play = 1;
+	cursor = 0;
 	PlayerX = 220;
 	PlayerY = 660;
 	score = 0;
@@ -31,41 +38,52 @@ void Player_Initialize()	//‰Šú‰»ˆ—
 	attackspan = 0;
 	Field_Create();
 	image = LoadGraph("image/kougeki.png");
+	AR_Image = LoadGraph("image/AttackR.png");
+	AS_Image = LoadGraph("image/AttackS.png");
 }
 void Player_Update()		//XVˆ—
 {
-	Field_Draw();
-	InputControl::Update();
-	Player_Move();
-	Player_Draw();
-	if (InputControl::GetKeyDown(KEY_INPUT_J) == true && attackspan <= 0)
+	if (play != 0)
 	{
-		Player_Attack();
-		attackspan = 30 - (ASLv * 20);
-	}
-	if (attackspan > 0)
-	{
-		DrawGraph(PlayerX - 20, PlayerY - 60, image, TRUE);
-		attackspan--;
-	}
-	if (InputControl::GetKeyDown(KEY_INPUT_K) == true && skilspan <= 0)
-	{
-		Skil_On();
-		skilspan = 600;
-	}
-	if (GetSkil() == 1)
-	{
-		skillife++;
-		if (skillife >= SkilCount)
+		Field_Draw();
+		InputControl::Update();
+		Player_Move();
+		Player_Draw();
+		if (InputControl::GetKeyDown(KEY_INPUT_J) == true && attackspan <= 0)
 		{
-			Skil_Off();
-			skillife = 0;
+			Player_Attack();
+			attackspan = 30 - (ASLv * 20);
+		}
+		if (attackspan > 0)
+		{
+			DrawGraph(PlayerX - 20, PlayerY - 60, image, TRUE);
+			attackspan--;
+		}
+		if (InputControl::GetKeyDown(KEY_INPUT_K) == true && skilspan <= 0)
+		{
+			Skil_On();
+			skilspan = 600;
+		}
+		if (GetSkil() == 1)
+		{
+			skillife++;
+			if (skillife >= SkilCount)
+			{
+				Skil_Off();
+				skillife = 0;
+			}
+		}
+		if (GetSkil() == 0 && skilspan > 0)
+		{
+			skilspan--;
 		}
 	}
-	if (GetSkil() == 0 && skilspan > 0)
+	else
 	{
-		skilspan--;
+		Draw_LvUp();
+		LvUp_Move();
 	}
+	
 }
 void Player_Move()			//ˆÚ“®ˆ—
 {
@@ -141,15 +159,64 @@ int Get_Score()
 	return score;
 }
 
-void ARLv_Up()
+void Draw_LvUp()
 {
-	if (ARLv < 5)
+	play = 0;
+	DrawGraph(200, 200, AR_Image, FALSE);
+	DrawGraph(400, 200, AS_Image, FALSE);
+	LvUp_Move();
+
+}
+
+void LvUp_Move()
+{
+	if (InputControl::GetKeyDown(KEY_INPUT_A))
 	{
-		ARLv++;
+		if (cursor == 0)
+		{
+			cursor = 1;
+		}
+		cursor--;
+	}
+	if (InputControl::GetKeyDown(KEY_INPUT_D))
+	{
+		if (cursor == 1)
+		{
+			cursor = 0;
+		}
+		cursor++;
+	}
+	if (InputControl::GetKeyDown(KEY_INPUT_K))
+	{
+		switch (cursor)
+		{
+		case 0:
+			ARLv++;
+			break;
+		case 1:
+			ASLv++;
+			break;
+		}
+		play = 1;
 	}
 }
 
 int Get_ARLv()
 {
 	return ARLv;
+}
+
+int Get_ASLv()
+{
+	return ASLv;
+}
+
+void play_change()
+{
+	play = 0;
+}
+
+int Get_play()
+{
+	return play;
 }

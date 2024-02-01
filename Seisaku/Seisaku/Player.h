@@ -13,5 +13,10 @@ float Player_GetX();				//X座標取得処理
 float Player_GetY();				//Y座標取得処理
 void ScoreUP();						//スコアアップ処理
 int Get_Score();					//スコア取得処理
-void ARLv_Up();
+void Draw_LvUp();
+void LvUp_Move();
 int Get_ARLv();
+int Get_ASLv();
+int Get_ADLv();
+void play_change();
+int Get_play();
