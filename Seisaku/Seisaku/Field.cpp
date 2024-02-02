@@ -213,7 +213,7 @@ void Enemy_Field(int n)
 
 int Check_Enemy(int h, int w)
 {
-	if (Field[h][w] != E_Empty)
+	if (Field[h][w] == E_Enemy)
 	{
 		return true;
 	}

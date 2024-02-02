@@ -77,7 +77,7 @@ int Castle_GetHp()
 
 void WaveUp()
 {
-	if (wave < 5)
+	if (wave < 25)
 	{
 		wave++;
 	}

@@ -55,11 +55,11 @@ void GameMainScene_Draw()
 	}
 	for (int i = 0; i < Get_ARLv(); i++)
 	{
-		DrawGraph(550 + (25 * i), 150, Star_Y, FALSE);
+		DrawGraph(550 + (25 * i), 100, Star_Y, FALSE);
 	}
 	for (int i = 0; i < 5 - Get_ASLv(); i++)
 	{
-		DrawGraph(650 - (25 * i), 100, Star_B, FALSE);
+		DrawGraph(650 - (25 * i), 150, Star_B, FALSE);
 	}
 	for (int i = 0; i < Get_ASLv(); i++)
 	{

@@ -43,10 +43,10 @@ void Player_Initialize()	//‰Šú‰»ˆ—
 }
 void Player_Update()		//XVˆ—
 {
+	InputControl::Update();
 	if (play != 0)
 	{
 		Field_Draw();
-		InputControl::Update();
 		Player_Move();
 		Player_Draw();
 		if (InputControl::GetKeyDown(KEY_INPUT_J) == true && attackspan <= 0)
@@ -161,11 +161,17 @@ int Get_Score()
 
 void Draw_LvUp()
 {
-	play = 0;
 	DrawGraph(200, 200, AR_Image, FALSE);
 	DrawGraph(400, 200, AS_Image, FALSE);
-	LvUp_Move();
-
+	switch (cursor)
+	{
+	case 0:
+		DrawBoxAA(200, 200, 300, 300, 0xffffff, FALSE, 2.0f);
+		break;
+	case 1:
+		DrawBoxAA(400, 200, 500, 300, 0xffffff, FALSE, 2.0f);
+		break;
+	}
 }
 
 void LvUp_Move()
