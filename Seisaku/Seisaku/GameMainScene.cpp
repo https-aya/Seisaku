@@ -38,6 +38,7 @@ void GameMainScene_Update()
 		DrawFormatString(800, 240, 0xffffff, "%d", WaveCount, TRUE);
 		if (GetEnemykill() >= MAX_ENEMY * Get_Wave())
 		{
+			WaveCount++;
 			WaveUp();
 			play_change();
 			Enemy_Initialize();

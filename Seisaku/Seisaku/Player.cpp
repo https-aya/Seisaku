@@ -20,6 +20,7 @@ float skillife;
 float skilspan;
 float attackspan;
 int play;
+int PLv;
 int AR_Image;
 int AS_Image;
 int cursor;
@@ -31,6 +32,7 @@ void Player_Initialize()	//‰Šú‰»ˆ—
 	PlayerX = 220;
 	PlayerY = 660;
 	score = 0;
+	PLv = 0;
 	ARLv = 0;
 	ASLv = 0;
 	skillife = 0;
@@ -197,13 +199,22 @@ void LvUp_Move()
 		switch (cursor)
 		{
 		case 0:
-			ARLv++;
-			break;
+			if (ARLv < 5)
+			{
+				ARLv++;
+				PLv++;
+				play = 1;
+				break;
+			}
 		case 1:
-			ASLv++;
-			break;
+			if (ASLv < 5)
+			{
+				ASLv++;
+				PLv++;
+				play = 1;
+				break;
+			}
 		}
-		play = 1;
 	}
 }
 
@@ -219,7 +230,10 @@ int Get_ASLv()
 
 void play_change()
 {
-	play = 0;
+	if (PLv < 10)
+	{
+		play = 0;
+	}
 }
 
 int Get_play()
