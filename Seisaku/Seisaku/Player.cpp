@@ -23,6 +23,7 @@ int play;
 int PLv;
 int AR_Image;
 int AS_Image;
+int AD_Image;
 int cursor;
 
 void Player_Initialize()	//初期化処理
@@ -34,14 +35,16 @@ void Player_Initialize()	//初期化処理
 	score = 0;
 	PLv = 0;
 	ARLv = 0;
+	ADLv = 0;
 	ASLv = 0;
 	skillife = 0;
 	skilspan = 0;
 	attackspan = 0;
 	Field_Create();
 	image = LoadGraph("image/kougeki.png");
-	AR_Image = LoadGraph("image/AttackR.png");
-	AS_Image = LoadGraph("image/AttackS.png");
+	AR_Image = LoadGraph("image/AttackRUP.png");
+	AS_Image = LoadGraph("image/AttackSUP.png");
+	AD_Image = LoadGraph("image/AttackDUP.png");
 }
 void Player_Update()		//更新処理
 {
@@ -165,6 +168,8 @@ void Draw_LvUp()
 {
 	DrawGraph(200, 200, AR_Image, FALSE);
 	DrawGraph(400, 200, AS_Image, FALSE);
+	DrawGraph(600, 200, AD_Image, FALSE);
+	DrawFormatString(200, 600, 0xffffff, "  ----AキーとDキーで選択----\n---------Kキーで決定---------");
 	switch (cursor)
 	{
 	case 0:
@@ -172,6 +177,9 @@ void Draw_LvUp()
 		break;
 	case 1:
 		DrawBoxAA(400, 200, 500, 300, 0xffffff, FALSE, 2.0f);
+		break;
+	case 2:
+		DrawBoxAA(600, 200, 700, 300, 0xffffff, FALSE, 2.0f);
 		break;
 	}
 }
@@ -188,7 +196,7 @@ void LvUp_Move()
 	}
 	if (InputControl::GetKeyDown(KEY_INPUT_D))
 	{
-		if (cursor == 1)
+		if (cursor == 2)
 		{
 			cursor = 0;
 		}
@@ -214,6 +222,14 @@ void LvUp_Move()
 				play = 1;
 				break;
 			}
+		case 2:
+			if (ADLv < 5)
+			{
+				ADLv++;
+				PLv++;
+				play = 1;
+				break;
+			}
 		}
 	}
 }
@@ -226,6 +242,11 @@ int Get_ARLv()
 int Get_ASLv()
 {
 	return ASLv;
+}
+
+int Get_ADLv()
+{
+	return ADLv;
 }
 
 void play_change()

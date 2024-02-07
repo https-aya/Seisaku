@@ -19,6 +19,7 @@ int GameMainScene_Initialize()
 	Star_Y = LoadGraph("image/hosi_Y.png");
 	AttackRange_Image = LoadGraph("image/AttackR.png");
 	AttackSpeed_Image = LoadGraph("image/AttackS.png");
+	AttackDamage_Image = LoadGraph("image/AttackD.png");
 	Castle_Initialize();
 	Player_Initialize();
 	Enemy_Initialize();
@@ -50,6 +51,7 @@ void GameMainScene_Draw()
 {
 	DrawExtendGraph(500, 90, 550, 140, AttackRange_Image, FALSE);
 	DrawExtendGraph(500, 140, 550, 190, AttackSpeed_Image, FALSE);
+	DrawExtendGraph(500, 190, 550, 250, AttackDamage_Image, FALSE);
 	for (int i = 0; i < 5 - Get_ARLv(); i++)
 	{
 		DrawGraph(650 - (25 * i), 100, Star_B, FALSE);
@@ -60,10 +62,18 @@ void GameMainScene_Draw()
 	}
 	for (int i = 0; i < 5 - Get_ASLv(); i++)
 	{
-		DrawGraph(650 - (25 * i), 150, Star_B, FALSE);
+		DrawGraph(650 - (25 * i), 155, Star_B, FALSE);
 	}
 	for (int i = 0; i < Get_ASLv(); i++)
 	{
-		DrawGraph(550 + (25 * i), 150, Star_Y, FALSE);
+		DrawGraph(550 + (25 * i), 155, Star_Y, FALSE);
+	}
+	for (int i = 0; i < 5 - Get_ADLv(); i++)
+	{
+		DrawGraph(650 - (25 * i), 210, Star_B, FALSE);
+	}
+	for (int i = 0; i < Get_ADLv(); i++)
+	{
+		DrawGraph(550 + (25 * i), 210, Star_Y, FALSE);
 	}
 }
