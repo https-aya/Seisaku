@@ -24,7 +24,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance,
 		SceneManager_Initialize(E_TITLE);
 
 
-		while (ErrorCheck() == D_NORMALITY)
+		while (ErrorCheck() == D_NORMALITY && ProcessMessage() == 0)
 		{
 			ClearDrawScreen();
 

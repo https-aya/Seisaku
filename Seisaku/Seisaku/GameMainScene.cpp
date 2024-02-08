@@ -11,6 +11,7 @@ int Star_Y;
 int AttackRange_Image;
 int AttackSpeed_Image;
 int AttackDamage_Image;
+int Skil_Image;
 
 int GameMainScene_Initialize()
 {
@@ -20,6 +21,15 @@ int GameMainScene_Initialize()
 	AttackRange_Image = LoadGraph("image/AttackR.png");
 	AttackSpeed_Image = LoadGraph("image/AttackS.png");
 	AttackDamage_Image = LoadGraph("image/AttackD.png");
+	switch (GetSkilnum())
+	{
+	case 0:
+		Skil_Image = LoadGraph("image/SkillWall.png");
+		break;
+	case 1:
+		Skil_Image = LoadGraph("image/SkillTimeStop.png");
+		break;
+	}
 	Castle_Initialize();
 	Player_Initialize();
 	Enemy_Initialize();
@@ -49,31 +59,32 @@ void GameMainScene_Update()
 
 void GameMainScene_Draw()
 {
-	DrawExtendGraph(500, 90, 550, 140, AttackRange_Image, FALSE);
-	DrawExtendGraph(500, 140, 550, 190, AttackSpeed_Image, FALSE);
-	DrawExtendGraph(500, 190, 550, 250, AttackDamage_Image, FALSE);
+
+	DrawExtendGraph(500, 190, 550, 240, AttackRange_Image, FALSE);
+	DrawExtendGraph(500, 240, 550, 290, AttackSpeed_Image, FALSE);
+	DrawExtendGraph(500, 290, 550, 340, AttackDamage_Image, FALSE);
 	for (int i = 0; i < 5 - Get_ARLv(); i++)
 	{
-		DrawGraph(650 - (25 * i), 100, Star_B, FALSE);
+		DrawGraph(650 - (25 * i), 200, Star_B, FALSE);
 	}
 	for (int i = 0; i < Get_ARLv(); i++)
 	{
-		DrawGraph(550 + (25 * i), 100, Star_Y, FALSE);
+		DrawGraph(550 + (25 * i), 200, Star_Y, FALSE);
 	}
 	for (int i = 0; i < 5 - Get_ASLv(); i++)
 	{
-		DrawGraph(650 - (25 * i), 155, Star_B, FALSE);
+		DrawGraph(650 - (25 * i), 255, Star_B, FALSE);
 	}
 	for (int i = 0; i < Get_ASLv(); i++)
 	{
-		DrawGraph(550 + (25 * i), 155, Star_Y, FALSE);
+		DrawGraph(550 + (25 * i), 255, Star_Y, FALSE);
 	}
 	for (int i = 0; i < 5 - Get_ADLv(); i++)
 	{
-		DrawGraph(650 - (25 * i), 210, Star_B, FALSE);
+		DrawGraph(650 - (25 * i), 310, Star_B, FALSE);
 	}
 	for (int i = 0; i < Get_ADLv(); i++)
 	{
-		DrawGraph(550 + (25 * i), 210, Star_Y, FALSE);
+		DrawGraph(550 + (25 * i), 310, Star_Y, FALSE);
 	}
 }

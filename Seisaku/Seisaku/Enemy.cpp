@@ -73,18 +73,14 @@ void Enemy_Update()
 						CastleHit(k);
 						break;
 
-					case E_QUICK:
-						enemy[k].waitcount++;
-						if (enemy[k].waitcount >= 3)
-						{
-							while (enemy[k].HP > 0)
-							{
-								CastleHit(k);
-								break;
-							}
-							enemy[k].waitcount = 0;
-						}
+					case E_CROSS:
+						CastleHit(k);
 						break;
+
+					case E_BOME:
+						CastleHit(k);
+						break;
+
 					}
 
 					enemy[k].Wait = 0;
@@ -104,11 +100,10 @@ void Enemy_Draw()
 			switch (enemy[k].type)
 			{
 			case E_NOMAL:
-				DrawGraph(enemy[k].EnemyX - 25, enemy[k].EnemyY - 25, enemy[k].image, FALSE);
-				//DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xff0000, TRUE);
+				DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xff0000, TRUE);
 				break;
 
-			case E_QUICK:
+			case E_CROSS:
 				if (enemy[k].HP > 1)
 				{
 					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x00ff00, TRUE);
@@ -120,7 +115,20 @@ void Enemy_Draw()
 					break;
 				}
 			case E_BOME:
-				DrawGraph(enemy[k].EnemyX, enemy[k].EnemyY, enemy[k].image, FALSE);
+				switch (enemy[k].HP)
+				{
+				case 3:
+					enemy[k].image = LoadGraph("image/E_BOME_C.png");
+					break;
+				case 2:
+					enemy[k].image = LoadGraph("image/E_BOME2.png");
+					break;
+				case 1:
+					enemy[k].image = LoadGraph("image/E_BOME3.png");
+					break;
+				}
+				DrawExtendGraph(enemy[k].EnemyX - 20, enemy[k].EnemyY - 20, enemy[k].
+					EnemyX + 20, enemy[k].EnemyY + 20, enemy[k].image, TRUE);
 				break;
 			}
 		}
@@ -131,14 +139,21 @@ void Enemy_Draw()
 void Enemy_Create(int i)
 {
 	enemy[i].Wait = 0;
-	int j = 3;
+	int j = 0;
 	if (Get_Wave() >= 3)
 	{
 		if (Get_Wave() >= 6)
 		{
 			if (Get_Wave() >= 9)
 			{
-				j = rand() % 11;
+				if (Get_Wave() >= 12)
+				{
+					j = rand() % 15;
+				}
+				else
+				{
+					j = rand() % 12;
+				}
 			}
 			else
 			{
@@ -147,30 +162,30 @@ void Enemy_Create(int i)
 		}
 		else
 		{
-			j = rand() % 7;
+			j = rand() % 6;
 		}
 	}
 
 	switch (j)
 	{
+	case 3:
 	case 4:
 	case 5:
-	case 6:
-		enemy[i].type = E_QUICK;
-		enemy[i].waitcount = 0;
+		enemy[i].type = E_CROSS;
 		enemy[i].HP = 2;
 		break;
 
+	case 6:
 	case 7:
 	case 8:
 		enemy[i].type = E_BOME;
-		enemy[i].image = LoadGraph("image/E_BOME_C.png");
 		enemy[i].HP = 3;
 		break;
 
+	
+
 	default:
 		enemy[i].type = E_NOMAL;
-		enemy[i].image = LoadGraph("image/E_BOME_C.png");
 		enemy[i].HP = 1;
 		break;
 	}
@@ -211,24 +226,59 @@ int GetEnemykill()
 
 void CastleHit(int k)
 {
-	if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == true)
+	switch (enemy[k].type)
 	{
-		if (GetSkil() != 0 && GetSkilnum() == 0)
+	case E_CROSS:
+		if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == true)
 		{
-			enemy[k].HP = 0;
-			enemykill++;
-			Skil_Off();
+			if (GetSkil() != 0 && GetSkilnum() == 0)
+			{
+				enemy[k].HP = 0;
+				enemykill++;
+				Skil_Off();
+			}
+			else
+			{
+				enemy[k].HP = 0;
+				enemykill++;
+				Castle_Damage();
+			}
 		}
-		else
+		else if (check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
 		{
-			enemy[k].HP = 0;
-			enemykill++;
-			Castle_Damage();
+			Enemy_MoveField();
+			enemy[k].EnemyY += TroutSize;
+			enemy[k].EnemyX += TroutSize;
 		}
-	}
-	else if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
-	{
-		Enemy_MoveField();
-		enemy[k].EnemyY += TroutSize;
+		else if (check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+		{
+			Enemy_MoveField();
+			enemy[k].EnemyY += TroutSize;
+			enemy[k].EnemyX -= TroutSize;
+		}
+		break;
+
+	default:
+		if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == true)
+		{
+			if (GetSkil() != 0 && GetSkilnum() == 0)
+			{
+				enemy[k].HP = 0;
+				enemykill++;
+				Skil_Off();
+			}
+			else
+			{
+				enemy[k].HP = 0;
+				enemykill++;
+				Castle_Damage();
+			}
+		}
+		else if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+		{
+			Enemy_MoveField();
+			enemy[k].EnemyY += TroutSize;
+		}
+		break;
 	}
 }
