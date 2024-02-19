@@ -3,7 +3,7 @@
 #include "SceneManager.h"
 
 #define SCREEN_HEIGHT (720)
-#define SCREEN_WIDTH (1280)
+#define SCREEN_WIDTH (850)
 #define SCREEN_COLORBIT (32)
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance,

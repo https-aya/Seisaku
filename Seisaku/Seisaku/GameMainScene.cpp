@@ -1,4 +1,5 @@
 #include "GameMainScene.h"
+#include "SceneManager.h"
 #include "Player.h"
 #include "Castle.h"
 #include "Enemy.h"
@@ -36,6 +37,7 @@ int GameMainScene_Initialize()
 	Skil_Initialize();
 	return 0;
 }
+
 void GameMainScene_Update()
 {
 	Player_Update();
@@ -54,6 +56,11 @@ void GameMainScene_Update()
 			play_change();
 			Enemy_Initialize();
 		}
+	}
+	if (Castle_GetHp() <= -0)
+	{
+		play_change();
+		Change_Scene(E_RANKING);
 	}
 }
 

@@ -33,8 +33,6 @@ T_RANKING Ranking_Data[RANKING_MAX];		//ランキングデータ
 T_RANKING New_Score;						//新しいスコアデータ
 int DispMode;								//表示モード
 
-InputControl input;
-
 T_CURSOR Cursor;							//カーソル用変数
 int name_num;
 
@@ -78,6 +76,7 @@ int RankingScene_Initialize(void)
 **********************************/
 void RankingScene_Update(void)
 {
+	InputControl::Update();
 	switch (DispMode)
 	{
 	case RANKING_INPUT_MODE:
@@ -85,7 +84,7 @@ void RankingScene_Update(void)
 		break;
 	case RANKING_DISP_MODE:
 	default:
-		if (input.GetKeyDown(KEY_INPUT_K) == true)
+		if (InputControl::GetKeyDown(KEY_INPUT_K) == true)
 		{
 			Change_Scene(E_TITLE);
 		}
@@ -250,28 +249,28 @@ void ranking_input_name(void)
 	int c;
 
 	//カーソル操作処理
-	if (input.GetKeyDown(KEY_INPUT_A) == true)
+	if (InputControl::GetKeyDown(KEY_INPUT_A) == true)
 	{
 		if (Cursor.x > 0)
 		{
 			Cursor.x--;
 		}
 	}
-	if (input.GetKeyDown(KEY_INPUT_D) == true)
+	if (InputControl::GetKeyDown(KEY_INPUT_D) == true)
 	{
 		if (Cursor.x < 12)
 		{
 			Cursor.x++;
 		}
 	}
-	if (input.GetKeyDown(KEY_INPUT_W) == true)
+	if (InputControl::GetKeyDown(KEY_INPUT_W) == true)
 	{
 		if (Cursor.y > 0)
 		{
 			Cursor.y--;
 		}
 	}
-	if (input.GetKeyDown(KEY_INPUT_S) == true)
+	if (InputControl::GetKeyDown(KEY_INPUT_S) == true)
 	{
 		if (Cursor.y < 4)
 		{
@@ -280,7 +279,7 @@ void ranking_input_name(void)
 	}
 
 	//文字を選択する
-	if (input.GetKeyDown(KEY_INPUT_J) == true)
+	if (InputControl::GetKeyDown(KEY_INPUT_J) == true)
 	{
 		if (Cursor.y < 2)
 		{

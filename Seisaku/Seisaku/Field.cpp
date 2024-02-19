@@ -179,9 +179,18 @@ int Check_Castile(int h, int w)
 {
 	if (Field[h][w] == E_Castle)
 	{
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
+}
+
+int check_player(int x, int y)
+{
+	if (Field[y][x] == E_Player)
+	{
+		return TRUE;
+	}
+	return FALSE;
 }
 
 void Enemy_MoveField()
@@ -236,8 +245,8 @@ void Player_Field()
 
 void EnemyDamage(int n)
 {
-	Enemy_HP(n);
-	if (Enemy_GetHP(n) == 0)
+	Enemy_DecreaseHP(n,Get_ADLv() + 1);
+	if (Enemy_GetHP(n) <= 0)
 	{
 		ScoreUP();
 		EnemykillUp();

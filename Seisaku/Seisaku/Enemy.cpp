@@ -5,7 +5,7 @@
 #include "DxLib.h"
 #include "time.h"
 
-#define WaitTime  (300)
+#define WaitTime  (200)
 
 struct EnemyPattern
 {
@@ -16,6 +16,8 @@ struct EnemyPattern
 	int Wait;
 	int waitcount;
 	int HP;
+	float enemy_vectol_X;
+	float enemy_vectol_Y;
 };
 EnemyPattern enemy[50];
 int enemykill;
@@ -43,8 +45,8 @@ void Enemy_Update()
 		{
 			Enemy_Create(enemycriatecount);
 			enemycriatecount++;
-			k = rand() % 3 + 1;
-			criatedelay = k * 100;
+			k = rand() % 5 + 1;
+			criatedelay = k * 60 - (2 * Get_Wave());
 		}
 	}
 	else if(enemycriatecount < MAX_ENEMY * Get_Wave() && criatedelay > 0)
@@ -172,6 +174,8 @@ void Enemy_Create(int i)
 	case 4:
 	case 5:
 		enemy[i].type = E_CROSS;
+		enemy[i].enemy_vectol_X = TroutSize;
+		enemy[i].enemy_vectol_Y = TroutSize;
 		enemy[i].HP = 2;
 		break;
 
@@ -194,9 +198,9 @@ void Enemy_Create(int i)
 }
 
 
-void Enemy_HP(int n)
+void Enemy_DecreaseHP(int n,int d)
 {
-	enemy[n].HP--;
+	enemy[n].HP -= d;
 }
 
 int Enemy_GetHP(int n)
@@ -244,22 +248,25 @@ void CastleHit(int k)
 				Castle_Damage();
 			}
 		}
-		else if (check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+		else if(enemy[k].enemy_vectol_X == TroutSize && check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE || enemy[k].enemy_vectol_X == -TroutSize && check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
 		{
 			Enemy_MoveField();
-			enemy[k].EnemyY += TroutSize;
-			enemy[k].EnemyX += TroutSize;
+			enemy[k].EnemyX += enemy[k].enemy_vectol_X;
+			enemy[k].EnemyY += enemy[k].enemy_vectol_Y;
 		}
-		else if (check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+		if (check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE && check_player((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE)
 		{
-			Enemy_MoveField();
-			enemy[k].EnemyY += TroutSize;
-			enemy[k].EnemyX -= TroutSize;
+			enemy[k].enemy_vectol_X = -TroutSize;
 		}
+		if (check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE && check_player((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE || enemy[k].EnemyX - TroutSize <= 0)
+		{
+			enemy[k].enemy_vectol_X = TroutSize;
+		}
+
 		break;
 
 	default:
-		if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == true)
+		if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == TRUE)
 		{
 			if (GetSkil() != 0 && GetSkilnum() == 0)
 			{
