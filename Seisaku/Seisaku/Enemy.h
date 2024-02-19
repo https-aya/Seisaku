@@ -26,3 +26,4 @@ float Enemy_GetY(int n);		//Y座標取得処理
 void EnemykillUp();				//キルカウント
 int GetEnemykill();				//キルカウント取得処理
 void CastleHit(int k);
+void Enemy_Move(int k,int skil,int skilnum);

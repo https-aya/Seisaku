@@ -1,11 +1,12 @@
 #include "Enemy.h"
+#include "Player.h"
 #include "Field.h"
 #include "Castle.h"
 #include "Skil.h"
 #include "DxLib.h"
-#include "time.h"
 
-#define WaitTime  (200)
+
+#define WaitTime  (20)
 
 struct EnemyPattern
 {
@@ -35,9 +36,8 @@ void Enemy_Update()
 {
 	if (enemycriatecount < MAX_ENEMY * Get_Wave() && criatedelay == 0)
 	{
-		srand((unsigned)time(NULL));
 		int k;
-		k = rand() % 11;
+		k = GetRand(11);
 		enemy[enemycriatecount].EnemyX = 20 + (TroutSize * k);
 		enemy[enemycriatecount].EnemyY = 20;
 		if (Check_Enemy(enemy[enemycriatecount].EnemyY / TroutSize,
@@ -45,7 +45,7 @@ void Enemy_Update()
 		{
 			Enemy_Create(enemycriatecount);
 			enemycriatecount++;
-			k = rand() % 5 + 1;
+			k = GetRand(5) + 1;
 			criatedelay = k * 60 - (2 * Get_Wave());
 		}
 	}
@@ -64,28 +64,46 @@ void Enemy_Update()
 	{
 		for (int k = 0; k < MAX_ENEMY * Get_Wave(); k++)
 		{
-			if (enemy[k].HP > 0)
+			if (GetSkilnum() == 2 && GetSkil() != 0)
 			{
-				enemy[k].Wait++;
-				if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
+				if (Player_GetX() / TroutSize != enemy[k].EnemyX / TroutSize || Player_GetY() / TroutSize != enemy[k].EnemyY / TroutSize)
 				{
-					switch (enemy[k].type)
+					if (enemy[k].HP > 0)
 					{
-					case E_NOMAL:
-						CastleHit(k);
-						break;
-
-					case E_CROSS:
-						CastleHit(k);
-						break;
-
-					case E_BOME:
-						CastleHit(k);
-						break;
-
+						enemy[k].Wait++;
+						if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
+						{
+							CastleHit(k);
+							enemy[k].Wait = 0;
+						}
 					}
+				}
+			}
+			else 
+			{
+				if (enemy[k].HP > 0)
+				{
+					enemy[k].Wait++;
+					if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
+					{
+						switch (enemy[k].type)
+						{
+						case E_NOMAL:
+							CastleHit(k);
+							break;
 
-					enemy[k].Wait = 0;
+						case E_CROSS:
+							CastleHit(k);
+							break;
+
+						case E_BOME:
+							CastleHit(k);
+							break;
+
+						}
+
+						enemy[k].Wait = 0;
+					}
 				}
 			}
 		}
@@ -230,62 +248,79 @@ int GetEnemykill()
 
 void CastleHit(int k)
 {
-	switch (enemy[k].type)
+	if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == TRUE)
 	{
-	case E_CROSS:
-		if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == true)
+		if (GetSkil() != 0 && GetSkilnum() == 0)
 		{
-			if (GetSkil() != 0 && GetSkilnum() == 0)
-			{
-				enemy[k].HP = 0;
-				enemykill++;
-				Skil_Off();
-			}
-			else
-			{
-				enemy[k].HP = 0;
-				enemykill++;
-				Castle_Damage();
-			}
+			enemy[k].HP = 0;
+			enemykill++;
+			Skil_Off();
 		}
-		else if(enemy[k].enemy_vectol_X == TroutSize && check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE || enemy[k].enemy_vectol_X == -TroutSize && check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+		else
+		{
+			enemy[k].HP = 0;
+			enemykill++;
+			Castle_Damage();
+		}
+	}
+	else
+	{
+		Enemy_Move(k,GetSkil(),GetSkilnum());
+	}
+}
+
+void Enemy_Move(int k,int skil,int skilnum)
+{
+	if (skilnum==2 && skil != 0)
+	{
+		if (check_player((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize)) == FALSE &&
+			check_player((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE &&
+			check_player((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == FALSE &&
+			check_player((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE &&
+			check_player((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize)) == FALSE)
 		{
 			Enemy_MoveField();
-			enemy[k].EnemyX += enemy[k].enemy_vectol_X;
-			enemy[k].EnemyY += enemy[k].enemy_vectol_Y;
-		}
-		if (check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE && check_player((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE)
-		{
-			enemy[k].enemy_vectol_X = -TroutSize;
-		}
-		if (check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE && check_player((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE || enemy[k].EnemyX - TroutSize <= 0)
-		{
-			enemy[k].enemy_vectol_X = TroutSize;
-		}
-
-		break;
-
-	default:
-		if (Check_Castile((enemy[k].EnemyY / TroutSize + 1), (enemy[k].EnemyX / TroutSize)) == TRUE)
-		{
-			if (GetSkil() != 0 && GetSkilnum() == 0)
+			if (Player_GetX() > enemy[k].EnemyX)
 			{
-				enemy[k].HP = 0;
-				enemykill++;
-				Skil_Off();
+				enemy[k].EnemyX += TroutSize;
 			}
-			else
+			else if (Player_GetX() < enemy[k].EnemyX)
 			{
-				enemy[k].HP = 0;
-				enemykill++;
-				Castle_Damage();
+				enemy[k].EnemyX -= TroutSize;
+			}
+			if (Player_GetY() > enemy[k].EnemyY)
+			{
+				enemy[k].EnemyY += TroutSize;
 			}
 		}
-		else if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+	}
+	else
+	{
+		switch (enemy[k].type)
 		{
-			Enemy_MoveField();
-			enemy[k].EnemyY += TroutSize;
+		case E_CROSS:
+			if (enemy[k].enemy_vectol_X == TroutSize && check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE || enemy[k].enemy_vectol_X == -TroutSize && check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+			{
+				Enemy_MoveField();
+				enemy[k].EnemyX += enemy[k].enemy_vectol_X;
+				enemy[k].EnemyY += enemy[k].enemy_vectol_Y;
+			}
+			if (check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE && check_player((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE)
+			{
+				enemy[k].enemy_vectol_X = -TroutSize;
+			}
+			if (check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE && check_player((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE || enemy[k].EnemyX - TroutSize <= 0)
+			{
+				enemy[k].enemy_vectol_X = TroutSize;
+			}
+			break;
+		default:
+			if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+			{
+				Enemy_MoveField();
+				enemy[k].EnemyY += TroutSize;
+			}
+			break;
 		}
-		break;
 	}
 }
