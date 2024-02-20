@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Castle.h"
 #include "Enemy.h"
+#include "Field.h"
 #include "Skil.h"
 #include "DxLib.h"
 
@@ -35,6 +36,7 @@ int GameMainScene_Initialize()
 	Player_Initialize();
 	Enemy_Initialize();
 	Skil_Initialize();
+	enemycount_clear();
 	return 0;
 }
 
@@ -49,17 +51,21 @@ void GameMainScene_Update()
 		GameMainScene_Draw();
 		DrawFormatString(800, 200, 0xffffff, "%d", Get_Score(), TRUE);
 		DrawFormatString(800, 240, 0xffffff, "%d", WaveCount, TRUE);
-		if (GetEnemykill() >= MAX_ENEMY * Get_Wave())
+		if (GetEnemyattack_count() + Get_enemykill() >= MAX_ENEMY * Get_Wave())
 		{
 			WaveCount++;
 			WaveUp();
-			play_change();
 			Enemy_Initialize();
 		}
 	}
-	if (Castle_GetHp() <= -0)
+	if (Get_enemycount() >= 4 * (Get_PLv() + 1))
 	{
-		play_change();
+		play_change(0);
+		enemycount_clear();
+	}
+	if (Castle_GetHp() <= 0)
+	{
+		play_change(0);
 		Change_Scene(E_RANKING);
 	}
 }
@@ -94,4 +100,5 @@ void GameMainScene_Draw()
 	{
 		DrawGraph(550 + (25 * i), 310, Star_Y, FALSE);
 	}
+	DrawFormatString(500, 400, 0xffffff, "%d", Get_enemycount());
 }

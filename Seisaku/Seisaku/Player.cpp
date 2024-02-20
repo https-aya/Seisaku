@@ -57,11 +57,11 @@ void Player_Update()		//XVˆ—
 		if (InputControl::GetKeyDown(KEY_INPUT_J) == true && attackspan <= 0)
 		{
 			Player_Attack();
-			attackspan = 30 - (ASLv * 20);
+			attackspan = 30.0f - (ASLv * 20.0f);
 		}
 		if (attackspan > 0)
 		{
-			DrawGraph(PlayerX - 20, PlayerY - 60, image, TRUE);
+			DrawGraph((int)PlayerX - 20, (int)PlayerY - 60, image, TRUE);
 			attackspan--;
 		}
 		if (InputControl::GetKeyDown(KEY_INPUT_K) == true && skilspan <= 0)
@@ -132,8 +132,8 @@ void Player_Move()			//ˆÚ“®ˆ—
 
 void Player_Draw()
 {
-	PfieldH = PlayerY / TroutSize;
-	PfieldW = PlayerX / TroutSize;
+	PfieldH = (int)PlayerY / TroutSize;
+	PfieldW = (int)PlayerX / TroutSize;
 	Player_Field();
 	DrawCircleAA(PlayerX, PlayerY, TroutSize / 2, 100, 0xffffff, TRUE);
 	DrawFormatString(500,50, 0xffffff, "%0.0f",skilspan/10);
@@ -249,11 +249,23 @@ int Get_ADLv()
 	return ADLv;
 }
 
-void play_change()
+int Get_PLv()
 {
-	if (PLv < 10)
+	return PLv;
+}
+
+void play_change(int n)
+{
+	if (n == 0)
 	{
-		play = 0;
+		if (PLv < 10)
+		{
+			play = n;
+		}
+	}
+	else
+	{
+		play = n;
 	}
 }
 

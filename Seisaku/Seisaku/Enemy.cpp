@@ -21,15 +21,16 @@ struct EnemyPattern
 	float enemy_vectol_Y;
 };
 EnemyPattern enemy[50];
-int enemykill;
+int enemyattack_count;
 int enemycriatecount;
 int criatedelay;
 
 void Enemy_Initialize()
 {
-	enemykill = 0;
+	enemyattack_count = 0;
 	enemycriatecount = 0;
 	criatedelay = 0;
+	enemykill_clear();
 }
 
 void Enemy_Update()
@@ -37,11 +38,11 @@ void Enemy_Update()
 	if (enemycriatecount < MAX_ENEMY * Get_Wave() && criatedelay == 0)
 	{
 		int k;
-		k = GetRand(11);
+		k = GetRand(10);
 		enemy[enemycriatecount].EnemyX = 20 + (TroutSize * k);
 		enemy[enemycriatecount].EnemyY = 20;
 		if (Check_Enemy(enemy[enemycriatecount].EnemyY / TroutSize,
-			enemy[enemycriatecount].EnemyX / TroutSize) == false)
+			enemy[enemycriatecount].EnemyX / TroutSize) == FALSE)
 		{
 			Enemy_Create(enemycriatecount);
 			enemycriatecount++;
@@ -236,14 +237,9 @@ float Enemy_GetY(int n)
 	return enemy[n].EnemyY;
 }
 
-void EnemykillUp()
+int GetEnemyattack_count()
 {
-	enemykill++;
-}
-
-int GetEnemykill()
-{
-	return enemykill;
+	return enemyattack_count;
 }
 
 void CastleHit(int k)
@@ -253,13 +249,13 @@ void CastleHit(int k)
 		if (GetSkil() != 0 && GetSkilnum() == 0)
 		{
 			enemy[k].HP = 0;
-			enemykill++;
+			enemyattack_count++;
 			Skil_Off();
 		}
 		else
 		{
 			enemy[k].HP = 0;
-			enemykill++;
+			enemyattack_count++;
 			Castle_Damage();
 		}
 	}
@@ -277,7 +273,12 @@ void Enemy_Move(int k,int skil,int skilnum)
 			check_player((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE &&
 			check_player((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == FALSE &&
 			check_player((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE &&
-			check_player((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize)) == FALSE)
+			check_player((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize)) == FALSE &&
+			Check_Enemy((enemy[k].EnemyY / TroutSize), (enemy[k].EnemyX / TroutSize) + 1) == FALSE &&
+			Check_Enemy((enemy[k].EnemyY / TroutSize) + 1, (enemy[k].EnemyX / TroutSize)+1) == FALSE &&
+			Check_Enemy((enemy[k].EnemyY / TroutSize) + 1, (enemy[k].EnemyX / TroutSize)) == FALSE &&
+			Check_Enemy((enemy[k].EnemyY / TroutSize) + 1, (enemy[k].EnemyX / TroutSize) - 1) == FALSE &&
+			Check_Enemy((enemy[k].EnemyY / TroutSize) , (enemy[k].EnemyX / TroutSize) - 1) == FALSE)
 		{
 			Enemy_MoveField();
 			if (Player_GetX() > enemy[k].EnemyX)

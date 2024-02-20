@@ -18,5 +18,6 @@ void LvUp_Move();
 int Get_ARLv();
 int Get_ASLv();
 int Get_ADLv();
-void play_change();
+int Get_PLv();
+void play_change(int n);
 int Get_play();

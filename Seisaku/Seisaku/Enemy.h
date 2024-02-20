@@ -23,7 +23,6 @@ void Enemy_DecreaseHP(int n,int d);			//HP減少処理
 int Enemy_GetHP(int n);			//㏋取得処理
 float Enemy_GetX(int n);		//X座標取得処理
 float Enemy_GetY(int n);		//Y座標取得処理
-void EnemykillUp();				//キルカウント
-int GetEnemykill();				//キルカウント取得処理
+int GetEnemyattack_count();				//キルカウント取得処理
 void CastleHit(int k);
 void Enemy_Move(int k,int skil,int skilnum);

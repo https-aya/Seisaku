@@ -11,6 +11,8 @@ int PFH;
 int PFW;
 int EFH;
 int EFW;
+int enemykill;
+int enemycount;
 
 void CheckDamage()
 {
@@ -18,108 +20,111 @@ void CheckDamage()
 	{
 		EFH = Enemy_GetY(n) / TroutSize;
 		EFW = Enemy_GetX(n) / TroutSize;
-		switch (Get_ARLv())
+		if (Enemy_GetHP(n) > 0)
 		{
-		case 0:
-			if (Field[EFH + 1][EFW] == E_Player)
+			switch (Get_ARLv())
 			{
-				EnemyDamage(n);
-			}
-			break;
-		case 1:
-			if (Field[EFH + 1][EFW] == E_Player ||
-				Field[EFH + 1][EFW + 1] == E_Player ||
-				Field[EFH + 1][EFW - 1] == E_Player)
-			{
-				EnemyDamage(n);
-			}
-			break;
-		case 2:
-			if (EFW > 0)
-			{
-				if (Field[EFH][EFW - 1] == E_Player)
+			case 0:
+				if (Field[EFH + 1][EFW] == E_Player)
 				{
 					EnemyDamage(n);
-					break;
 				}
-			}
-			if (Field[EFH + 1][EFW] == E_Player ||
-				Field[EFH + 1][EFW + 1] == E_Player ||
-				Field[EFH + 1][EFW - 1] == E_Player ||
-				Field[EFH][EFW + 1] == E_Player)
-			{
-				EnemyDamage(n);
-			}
-			break;
-		case 3:
-			if (EFH > 0)
-			{
+				break;
+			case 1:
+				if (Field[EFH + 1][EFW] == E_Player ||
+					Field[EFH + 1][EFW + 1] == E_Player ||
+					Field[EFH + 1][EFW - 1] == E_Player)
+				{
+					EnemyDamage(n);
+				}
+				break;
+			case 2:
 				if (EFW > 0)
 				{
-					if (Field[EFH - 1][EFW - 1] == E_Player)
+					if (Field[EFH][EFW - 1] == E_Player)
 					{
 						EnemyDamage(n);
 						break;
 					}
 				}
-				if (Field[EFH - 1][EFW + 1] == E_Player)
+				if (Field[EFH + 1][EFW] == E_Player ||
+					Field[EFH + 1][EFW + 1] == E_Player ||
+					Field[EFH + 1][EFW - 1] == E_Player ||
+					Field[EFH][EFW + 1] == E_Player)
 				{
 					EnemyDamage(n);
-					break;
 				}
-			}
-			if (EFW > 0)
-			{
-				if (Field[EFH][EFW - 1] == E_Player)
+				break;
+			case 3:
+				if (EFH > 0)
 				{
-					EnemyDamage(n);
-					break;
-				}
-			}
-			if (Field[EFH + 1][EFW] == E_Player ||
-				Field[EFH + 1][EFW + 1] == E_Player ||
-				Field[EFH + 1][EFW - 1] == E_Player ||
-				Field[EFH][EFW + 1] == E_Player)
-			{
-				EnemyDamage(n);
-			}
-			break;
-		case 4:
-		default:
-			if (EFH > 0)
-			{
-				if (EFW > 0)
-				{
-					if (Field[EFH - 1][EFW - 1] == E_Player)
+					if (EFW > 0)
+					{
+						if (Field[EFH - 1][EFW - 1] == E_Player)
+						{
+							EnemyDamage(n);
+							break;
+						}
+					}
+					if (Field[EFH - 1][EFW + 1] == E_Player)
 					{
 						EnemyDamage(n);
 						break;
 					}
 				}
-				if (Field[EFH - 1][EFW + 1] == E_Player ||
-					Field[EFH - 1][EFW] == E_Player)
+				if (EFW > 0)
+				{
+					if (Field[EFH][EFW - 1] == E_Player)
+					{
+						EnemyDamage(n);
+						break;
+					}
+				}
+				if (Field[EFH + 1][EFW] == E_Player ||
+					Field[EFH + 1][EFW + 1] == E_Player ||
+					Field[EFH + 1][EFW - 1] == E_Player ||
+					Field[EFH][EFW + 1] == E_Player)
 				{
 					EnemyDamage(n);
-					break;
 				}
-			}
-			if (EFW > 0)
-			{
-				if (Field[EFH][EFW - 1] == E_Player)
+				break;
+			case 4:
+			default:
+				if (EFH > 0)
+				{
+					if (EFW > 0)
+					{
+						if (Field[EFH - 1][EFW - 1] == E_Player)
+						{
+							EnemyDamage(n);
+							break;
+						}
+					}
+					if (Field[EFH - 1][EFW + 1] == E_Player ||
+						Field[EFH - 1][EFW] == E_Player)
+					{
+						EnemyDamage(n);
+						break;
+					}
+				}
+				if (EFW > 0)
+				{
+					if (Field[EFH][EFW - 1] == E_Player)
+					{
+						EnemyDamage(n);
+						break;
+					}
+				}
+				if (Field[EFH + 1][EFW] == E_Player ||
+					Field[EFH + 1][EFW + 1] == E_Player ||
+					Field[EFH + 1][EFW - 1] == E_Player ||
+					Field[EFH][EFW + 1] == E_Player)
 				{
 					EnemyDamage(n);
-					break;
 				}
+				break;
+
 			}
-			if (Field[EFH + 1][EFW] == E_Player ||
-				Field[EFH + 1][EFW + 1] == E_Player ||
-				Field[EFH + 1][EFW - 1] == E_Player ||
-				Field[EFH][EFW + 1] == E_Player)
-			{
-				EnemyDamage(n);
-			}
-			break;
-		
 		}
 	}
 }
@@ -224,9 +229,9 @@ int Check_Enemy(int h, int w)
 {
 	if (Field[h][w] == E_Enemy)
 	{
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 
 void Player_MoveField()
@@ -249,7 +254,30 @@ void EnemyDamage(int n)
 	if (Enemy_GetHP(n) <= 0)
 	{
 		ScoreUP();
-		EnemykillUp();
+		enemykill++;
+		enemycount++;
+		EFH = Enemy_GetY(n);
+		EFW = Enemy_GetX(n);
 		Field[EFH][EFW] = E_Empty;
 	}
+}
+
+int Get_enemykill()
+{
+	return enemykill;
+}
+
+void enemykill_clear()
+{
+	enemykill = 0;
+}
+
+int Get_enemycount()
+{
+	return enemycount;
+}
+
+void enemycount_clear()
+{
+	enemycount = 0;
 }
