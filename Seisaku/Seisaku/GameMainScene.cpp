@@ -10,6 +10,7 @@
 int WaveCount;
 int Star_B;
 int Star_Y;
+int wait_time;
 int AttackRange_Image;
 int AttackSpeed_Image;
 int AttackDamage_Image;
@@ -18,6 +19,7 @@ int Skil_Image;
 int GameMainScene_Initialize()
 {
 	WaveCount = 1;
+	wait_time = 0;
 	Star_B = LoadGraph("image/hosi_B.png");
 	Star_Y = LoadGraph("image/hosi_Y.png");
 	AttackRange_Image = LoadGraph("image/AttackR.png");
@@ -54,8 +56,22 @@ void GameMainScene_Update()
 		if (GetEnemyattack_count() + Get_enemykill() >= MAX_ENEMY * Get_Wave())
 		{
 			WaveCount++;
+			play_change(2);
 			WaveUp();
 			Enemy_Initialize();
+			wait_time = 450;
+		}
+		if (Get_play() == 2)
+		{
+			if (wait_time > 0)
+			{
+				DrawFormatString(wait_time*2, 360, 0x18ff04, "Wave%d", WaveCount);
+				wait_time--;
+				if (wait_time == 0)
+				{
+					play_change(1);
+				}
+			}
 		}
 	}
 	if (Get_enemycount() >= 4 * (Get_PLv() + 1))

@@ -83,6 +83,11 @@ void Player_Update()		//XVˆ—
 			skilspan--;
 		}
 	}
+	else if (play == 2)
+	{
+		Field_Draw();
+		Player_Draw();
+	}
 	else
 	{
 		Draw_LvUp();
@@ -156,7 +161,7 @@ float Player_GetY()
 
 void ScoreUP()
 {
-	score += 50;
+	score += 50 + PLv;
 }
 
 int Get_Score()

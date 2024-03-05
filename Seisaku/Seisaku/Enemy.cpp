@@ -35,81 +35,84 @@ void Enemy_Initialize()
 
 void Enemy_Update()
 {
-	if (enemycriatecount < MAX_ENEMY * Get_Wave() && criatedelay == 0)
+	if (Get_play() == 1)
 	{
-		int k;
-		k = GetRand(10);
-		enemy[enemycriatecount].EnemyX = 20 + (TroutSize * k);
-		enemy[enemycriatecount].EnemyY = 20;
-		if (Check_Enemy(enemy[enemycriatecount].EnemyY / TroutSize,
-			enemy[enemycriatecount].EnemyX / TroutSize) == FALSE)
+		if (enemycriatecount < MAX_ENEMY * Get_Wave() && criatedelay == 0)
 		{
-			Enemy_Create(enemycriatecount);
-			enemycriatecount++;
-			k = GetRand(5) + 1;
-			criatedelay = k * 60 - (2 * Get_Wave());
-		}
-	}
-	else if(enemycriatecount < MAX_ENEMY * Get_Wave() && criatedelay > 0)
-	{
-		criatedelay--;
-	}
-	if (GetSkilnum() == 1 && GetSkil() != 0)
-	{
-		for (int k = 0; k < MAX_ENEMY * Get_Wave(); k++)
-		{
-			enemy[k].Wait = 0;
-		}
-	}
-	else
-	{
-		for (int k = 0; k < MAX_ENEMY * Get_Wave(); k++)
-		{
-			if (GetSkilnum() == 2 && GetSkil() != 0)
+			int k;
+			k = GetRand(10);
+			enemy[enemycriatecount].EnemyX = 20 + (TroutSize * k);
+			enemy[enemycriatecount].EnemyY = 20;
+			if (Check_Enemy(enemy[enemycriatecount].EnemyY / TroutSize,
+				enemy[enemycriatecount].EnemyX / TroutSize) == FALSE)
 			{
-				if (Player_GetX() / TroutSize != enemy[k].EnemyX / TroutSize || Player_GetY() / TroutSize != enemy[k].EnemyY / TroutSize)
+				Enemy_Create(enemycriatecount);
+				enemycriatecount++;
+				k = GetRand(5) + 1;
+				criatedelay = k * 60 - (2 * Get_Wave());
+			}
+		}
+		else if (enemycriatecount < MAX_ENEMY * Get_Wave() && criatedelay > 0)
+		{
+			criatedelay--;
+		}
+		if (GetSkilnum() == 1 && GetSkil() != 0)
+		{
+			for (int k = 0; k < MAX_ENEMY * Get_Wave(); k++)
+			{
+				enemy[k].Wait = 0;
+			}
+		}
+		else
+		{
+			for (int k = 0; k < MAX_ENEMY * Get_Wave(); k++)
+			{
+				if (GetSkilnum() == 2 && GetSkil() != 0)
+				{
+					if (Player_GetX() / TroutSize != enemy[k].EnemyX / TroutSize || Player_GetY() / TroutSize != enemy[k].EnemyY / TroutSize)
+					{
+						if (enemy[k].HP > 0)
+						{
+							enemy[k].Wait++;
+							if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
+							{
+								CastleHit(k);
+								enemy[k].Wait = 0;
+							}
+						}
+					}
+				}
+				else
 				{
 					if (enemy[k].HP > 0)
 					{
 						enemy[k].Wait++;
 						if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
 						{
-							CastleHit(k);
+							switch (enemy[k].type)
+							{
+							case E_NOMAL:
+								CastleHit(k);
+								break;
+
+							case E_CROSS:
+								CastleHit(k);
+								break;
+
+							case E_BOME:
+								CastleHit(k);
+								break;
+
+							}
+
 							enemy[k].Wait = 0;
 						}
 					}
 				}
 			}
-			else 
-			{
-				if (enemy[k].HP > 0)
-				{
-					enemy[k].Wait++;
-					if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
-					{
-						switch (enemy[k].type)
-						{
-						case E_NOMAL:
-							CastleHit(k);
-							break;
-
-						case E_CROSS:
-							CastleHit(k);
-							break;
-
-						case E_BOME:
-							CastleHit(k);
-							break;
-
-						}
-
-						enemy[k].Wait = 0;
-					}
-				}
-			}
+			Enemy_Draw();
 		}
-		Enemy_Draw();
-	}	
+	}
 }
 
 void Enemy_Draw()

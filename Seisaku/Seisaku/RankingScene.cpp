@@ -322,30 +322,30 @@ void ranking_input_name_draw(void)
 	int i;
 
 	SetFontSize(40);
-	DrawFormatString(300, 150, GetColor(255, 255, 255), "名前を入力してください");
+	DrawFormatString(100, 150, GetColor(255, 255, 255), "名前を入力してください");
 
 	//選択用文字を描画
 	for (i = 0; i < 26; i++)
 	{
-		DrawFormatString((i % 13 * 50) + 300, (i / 13 * 50) + 330, GetColor(255, 255,
+		DrawFormatString((i % 13 * 50) + 100, (i / 13 * 50) + 330, GetColor(255, 255,
 			255), "%-3c", 'a' + i);
-		DrawFormatString((i % 13 * 50) + 300, (i / 13 * 50) + 430, GetColor(255, 255,
+		DrawFormatString((i % 13 * 50) + 100, (i / 13 * 50) + 430, GetColor(255, 255,
 			255), "%-3c", 'A' + i);
 	}
 	for (i = 0; i < 10; i++)
 	{
-		DrawFormatString((i % 13 * 50) + 300, 530, GetColor(255, 255, 255), "%-3c", '0' + i);
+		DrawFormatString((i % 13 * 50) + 100, 530, GetColor(255, 255, 255), "%-3c", '0' + i);
 	}
 
-	DrawFormatString(300, 220, GetColor(255, 255, 255), ">%s", New_Score.name);
+	DrawFormatString(100, 220, GetColor(255, 255, 255), ">%s", New_Score.name);
 	SetFontSize(35);
-	DrawFormatString(790, 530, 0xffffff, "消");
-	DrawFormatString(840, 530, 0xffffff, "決");
-	DrawFormatString(890, 530, 0xffffff, "終");
+	DrawFormatString(590, 530, 0xffffff, "消");
+	DrawFormatString(640, 530, 0xffffff, "決");
+	DrawFormatString(690, 530, 0xffffff, "終");
 	SetFontSize(20);
 
 	//選択している文字をフォーカスしている
-	DrawBox((Cursor.x * 50) + 290, (Cursor.y * 50) + 330,
-		(Cursor.x * 50) + 330, (Cursor.y * 50) + 370,
+	DrawBox((Cursor.x * 50) + 90, (Cursor.y * 50) + 330,
+		(Cursor.x * 50) + 130, (Cursor.y * 50) + 370,
 		GetColor(255, 255, 255), FALSE);
 }
