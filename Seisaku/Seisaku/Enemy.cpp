@@ -6,7 +6,7 @@
 #include "DxLib.h"
 
 
-#define WaitTime  (20)
+#define WaitTime  (200)
 
 struct EnemyPattern
 {
@@ -15,10 +15,10 @@ struct EnemyPattern
 	float EnemyX;
 	float EnemyY;
 	int Wait;
-	int waitcount;
+	int random;
 	int HP;
-	float enemy_vectol_X;
-	float enemy_vectol_Y;
+	float enemy_vector_X;
+	float enemy_vector_Y;
 };
 EnemyPattern enemy[50];
 int enemyattack_count;
@@ -74,10 +74,23 @@ void Enemy_Update()
 						if (enemy[k].HP > 0)
 						{
 							enemy[k].Wait++;
-							if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
+							switch (enemy[k].type)
 							{
-								CastleHit(k);
-								enemy[k].Wait = 0;
+							case E_QUICK:
+								if (enemy[k].Wait > (WaitTime / 1.6) - (2 * Get_Wave()))
+								{
+									CastleHit(k);
+									enemy[k].Wait = 0;
+									break;
+								}
+
+							default:
+								if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
+								{
+									CastleHit(k);
+									enemy[k].Wait = 0;
+									break;
+								}
 							}
 						}
 					}
@@ -87,25 +100,22 @@ void Enemy_Update()
 					if (enemy[k].HP > 0)
 					{
 						enemy[k].Wait++;
-						if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
+						switch (enemy[k].type)
 						{
-							switch (enemy[k].type)
+						case E_QUICK:
+							if (enemy[k].Wait > (WaitTime / 1.6) - (2 * Get_Wave()))
 							{
-							case E_NOMAL:
 								CastleHit(k);
+								enemy[k].Wait = 0;
 								break;
-
-							case E_CROSS:
-								CastleHit(k);
-								break;
-
-							case E_BOME:
-								CastleHit(k);
-								break;
-
 							}
-
-							enemy[k].Wait = 0;
+						default:
+							if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
+							{
+								CastleHit(k);
+								enemy[k].Wait = 0;
+								break;
+							}
 						}
 					}
 				}
@@ -138,6 +148,34 @@ void Enemy_Draw()
 					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x0000ff, TRUE);
 					break;
 				}
+
+			case E_QUICK:
+				if (enemy[k].HP > 1)
+				{
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xfedcba, TRUE);
+					break;
+				}
+				else
+				{
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xffacdb, TRUE);
+					break;
+				}
+
+			case E_JCROSS:
+				switch (enemy[k].HP)
+				{
+				case 3:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x123456, TRUE);
+					break;
+				case 2:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x654321, TRUE);
+					break;
+				case 1:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xabcdef, TRUE);
+					break;
+				}
+				break;
+
 			case E_BOME:
 				switch (enemy[k].HP)
 				{
@@ -164,31 +202,40 @@ void Enemy_Create(int i)
 {
 	enemy[i].Wait = 0;
 	int j = 0;
-	if (Get_Wave() >= 3)
+	if (Get_Wave() <= 3 || Get_Wave() >= 30 && Get_Wave() <= 33)
 	{
-		if (Get_Wave() >= 6)
-		{
-			if (Get_Wave() >= 9)
-			{
-				if (Get_Wave() >= 12)
-				{
-					j = rand() % 15;
-				}
-				else
-				{
-					j = rand() % 12;
-				}
-			}
-			else
-			{
-				j = rand() % 9;
-			}
-		}
-		else
-		{
-			j = rand() % 6;
-		}
+		j = 0;
 	}
+	else if (Get_Wave() <= 6 || Get_Wave() >= 34 && Get_Wave() <= 36)
+	{
+		j = GetRand(6);
+	}
+	else if (Get_Wave() <= 9 || Get_Wave() >= 37 && Get_Wave() <= 39)
+	{
+		j = GetRand(9);
+	}
+	else if (Get_Wave() <= 12 || Get_Wave() >= 40 && Get_Wave() <= 42)
+	{
+		j = GetRand(12);
+	}
+	else if (Get_Wave() <= 15 || Get_Wave() >= 43 && Get_Wave() <= 45)
+	{
+		j = GetRand(15);
+	}
+	else if (Get_Wave() <= 18 || Get_Wave() >= 46 && Get_Wave() <= 48)
+	{
+		j = GetRand(18);
+	}
+	else if (Get_Wave() <= 21 || Get_Wave() >= 49 && Get_Wave() <= 51)
+	{
+		j = GetRand(21);
+	}
+	else if (Get_Wave() <= 24 || Get_Wave() >= 52)
+	{
+		j = GetRand(24);
+	}
+			
+
 
 	switch (j)
 	{
@@ -196,23 +243,112 @@ void Enemy_Create(int i)
 	case 4:
 	case 5:
 		enemy[i].type = E_CROSS;
-		enemy[i].enemy_vectol_X = TroutSize;
-		enemy[i].enemy_vectol_Y = TroutSize;
-		enemy[i].HP = 2;
+		enemy[i].enemy_vector_X = TroutSize;
+		enemy[i].enemy_vector_Y = TroutSize;
+		if (Get_Wave() >= 30)
+		{
+			enemy[i].HP = 4;
+		}
+		else
+		{
+			enemy[i].HP = 2;
+		}
 		break;
 
 	case 6:
 	case 7:
 	case 8:
 		enemy[i].type = E_BOME;
-		enemy[i].HP = 3;
+		if (Get_Wave() >= 30)
+		{
+			enemy[i].HP = 6;
+		}
+		else
+		{
+			enemy[i].HP = 3;
+		}
 		break;
 
-	
+	case 9:
+	case 10:
+	case 11:
+		enemy[i].type = E_JCROSS;
+		if (Get_Wave() >= 30)
+		{
+			enemy[i].HP = 6;
+		}
+		else
+		{
+			enemy[i].HP = 3;
+		}
+		break;
+
+	case 12:
+	case 13:
+	case 14:
+		enemy[i].type = E_QUICK;
+		if (Get_Wave() >= 30)
+		{
+			enemy[i].HP = 4;
+		}
+		else
+		{
+			enemy[i].HP = 2;
+		}
+		break;
+
+	case 15:
+	case 16:
+	case 17:
+		enemy[i].type = E_STRAIGHT;
+		if (Get_Wave() >= 30)
+		{
+			enemy[i].HP = 6;
+		}
+		else
+		{
+			enemy[i].HP = 3;
+		}
+		break;
+
+	case 18:
+	case 19:
+	case 20:
+		enemy[i].type = E_GUARD;
+		if (Get_Wave() >= 30)
+		{
+			enemy[i].HP = 12;
+		}
+		else
+		{
+			enemy[i].HP = 6;
+		}
+		break;
+
+	case 21:
+	case 22:
+	case 23:
+		enemy[i].type = E_ZIGZAG;
+		if (Get_Wave() >= 30)
+		{
+			enemy[i].HP = 6;
+		}
+		else
+		{
+			enemy[i].HP = 3;
+		}
+		break;
 
 	default:
 		enemy[i].type = E_NOMAL;
-		enemy[i].HP = 1;
+		if (Get_Wave() >= 30)
+		{
+			enemy[i].HP = 2;
+		}
+		else
+		{
+			enemy[i].HP = 1;
+		}
 		break;
 	}
 	Enemy_Field(i);
@@ -303,21 +439,45 @@ void Enemy_Move(int k,int skil,int skilnum)
 		switch (enemy[k].type)
 		{
 		case E_CROSS:
-			if (enemy[k].enemy_vectol_X == TroutSize && check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE || enemy[k].enemy_vectol_X == -TroutSize && check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+			if (enemy[k].enemy_vector_X == TroutSize && check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE || enemy[k].enemy_vector_X == -TroutSize && check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
 			{
 				Enemy_MoveField();
-				enemy[k].EnemyX += enemy[k].enemy_vectol_X;
-				enemy[k].EnemyY += enemy[k].enemy_vectol_Y;
+				enemy[k].EnemyX += enemy[k].enemy_vector_X;
+				enemy[k].EnemyY += enemy[k].enemy_vector_Y;
 			}
 			if (check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE && check_player((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE)
 			{
-				enemy[k].enemy_vectol_X = -TroutSize;
+				enemy[k].enemy_vector_X = -TroutSize;
 			}
 			if (check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE && check_player((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 1) == FALSE || enemy[k].EnemyX - TroutSize <= 0)
 			{
-				enemy[k].enemy_vectol_X = TroutSize;
+				enemy[k].enemy_vector_X = TroutSize;
 			}
 			break;
+
+		case E_JCROSS:
+			enemy[k].random = GetRand(1);
+			if (enemy[k].random == 0)
+			{
+				if (check_overlap((enemy[k].EnemyX / TroutSize) + 1, (enemy[k].EnemyY / TroutSize) + 2) == TRUE)
+				{
+					Enemy_MoveField();
+					enemy[k].EnemyY += TroutSize * 2;
+					enemy[k].EnemyX += TroutSize;
+					break;
+				}
+			}
+			if (enemy[k].random == 1)
+			{
+				if (check_overlap((enemy[k].EnemyX / TroutSize) - 1, (enemy[k].EnemyY / TroutSize) + 2) == TRUE && enemy[k].EnemyX - TroutSize >= 0)
+				{
+					Enemy_MoveField();
+					enemy[k].EnemyY += TroutSize * 2;
+					enemy[k].EnemyX -= TroutSize;
+					break;
+				}
+			}
+
 		default:
 			if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
 			{
