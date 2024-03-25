@@ -55,6 +55,8 @@ void GameMainScene_Update()
 		Castle_Update();
 		Skil_Update();
 		GameMainScene_Draw();
+		DrawFormatString(500, 40, 0xffffff, "Player Level", TRUE);
+		DrawFormatString(500, 60, 0xffffff, "%d", Get_PLv(), TRUE);
 		DrawFormatString(500, 80, 0xffffff, "SCORE", TRUE);
 		DrawFormatString(500, 100, 0xffffff, "%d", Get_Score(), TRUE);
 		DrawFormatString(500, 120, 0xffffff, "WAVE", TRUE);

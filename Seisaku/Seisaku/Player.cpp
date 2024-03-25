@@ -141,7 +141,6 @@ void Player_Draw()
 	PfieldW = (int)PlayerX / TroutSize;
 	Player_Field();
 	DrawCircleAA(PlayerX, PlayerY, TroutSize / 2, 100, 0xffffff, TRUE);
-	DrawFormatString(500,50, 0xffffff, "%0.0f",skilspan/10);
 }
 
 void Player_Attack()
