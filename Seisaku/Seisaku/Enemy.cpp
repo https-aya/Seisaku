@@ -11,7 +11,6 @@
 struct EnemyPattern
 {
 	char type;
-	int image;
 	float EnemyX;
 	float EnemyY;
 	int Wait;
@@ -113,7 +112,7 @@ void Enemy_Update()
 						case E_STRAIGHT:
 							if (enemy[k].waitcount <= 0)
 							{
-								if (enemy[k].Wait > (WaitTime / 2) - (2 * Get_Wave()))
+								if (enemy[k].Wait > (WaitTime / 2.5) - (2 * Get_Wave()))
 								{
 									CastleHit(k);
 									enemy[k].Wait = 0;
@@ -132,6 +131,13 @@ void Enemy_Update()
 								enemy[k].Wait = 0;
 							}
 							break;
+						}
+					}
+					else if (enemy[k].type == E_BOME)
+					{
+						if (Check_Castile(enemy[k].EnemyX / TroutSize, (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+						{
+							Castle_Damage();
 						}
 					}
 				}
@@ -154,28 +160,32 @@ void Enemy_Draw()
 				break;
 
 			case E_CROSS:
-				if (enemy[k].HP > 1)
+				switch (enemy[k].HP)
 				{
+				case 4:
+				case 2:
 					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x00ff00, TRUE);
 					break;
-				}
-				else
-				{
+				case 3:
+				case 1:
 					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x0000ff, TRUE);
 					break;
 				}
-
+				break;
 			case E_QUICK:
-				if (enemy[k].HP  > 1)
+				switch (enemy[k].HP)
 				{
+				case 4:
+				case 2:
 					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xfedcba, TRUE);
 					break;
-				}
-				else
-				{
+
+				case 3:
+				case 1:
 					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xffacdb, TRUE);
 					break;
 				}
+				break;
 
 			case E_JCROSS:
 				switch (enemy[k].HP)
@@ -194,7 +204,6 @@ void Enemy_Draw()
 					break;
 				}
 				break;
-
 			case E_STRAIGHT:
 				switch (enemy[k].HP)
 				{
@@ -216,17 +225,64 @@ void Enemy_Draw()
 				switch (enemy[k].HP)
 				{
 				case 3:
-					enemy[k].image = LoadGraph("image/E_BOME_C.png");
+				case 6:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x45dfa4e, TRUE);
 					break;
 				case 2:
-					enemy[k].image = LoadGraph("image/E_BOME2.png");
+				case 5:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xff7a7fe, TRUE);
 					break;
 				case 1:
-					enemy[k].image = LoadGraph("image/E_BOME3.png");
+				case 4:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xafeecfa4, TRUE);
 					break;
 				}
-				DrawExtendGraph(enemy[k].EnemyX - 20, enemy[k].EnemyY - 20, enemy[k].
-					EnemyX + 20, enemy[k].EnemyY + 20, enemy[k].image, TRUE);
+				break;
+			case E_GUARD:
+				switch (enemy[k].HP)
+				{
+				case 6:
+				case 12:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x4ad3e7b, TRUE);
+					break;
+				case 5:
+				case 11:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x8cbdaef, TRUE);
+					break;
+				case 4:
+				case 10:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xa3f1768c, TRUE);
+					break;
+				case 3:
+				case 9:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x8a7c59df, TRUE);
+					break;
+				case 2:
+				case 8:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x00a8e44d, TRUE);
+					break;
+				case 1:
+				case 7:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x7c5a4d44, TRUE);
+					break;
+				}
+				break;
+			case E_ZIGZAG:
+				switch (enemy[k].HP)
+				{
+				case 6:
+				case 3:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x88ddea44, TRUE);
+					break;
+				case 5:
+				case 2:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x98fa7a0a, TRUE);
+					break;
+				case 4:
+				case 1:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x98cda7f4, TRUE);
+					break;
+				}
 				break;
 			}
 		}
@@ -244,31 +300,31 @@ void Enemy_Create(int i)
 	}
 	else if (Get_Wave() <= 6 || Get_Wave() >= 34 && Get_Wave() <= 36)
 	{
-		j = GetRand(6);
+		j = GetRand(5);
 	}
 	else if (Get_Wave() <= 9 || Get_Wave() >= 37 && Get_Wave() <= 39)
 	{
-		j = GetRand(9);
+		j = GetRand(8);
 	}
 	else if (Get_Wave() <= 12 || Get_Wave() >= 40 && Get_Wave() <= 42)
 	{
-		j = GetRand(12);
+		j = GetRand(11);
 	}
 	else if (Get_Wave() <= 15 || Get_Wave() >= 43 && Get_Wave() <= 45)
 	{
-		j = GetRand(15);
+		j = GetRand(14);
 	}
 	else if (Get_Wave() <= 18 || Get_Wave() >= 46 && Get_Wave() <= 48)
 	{
-		j = GetRand(18);
+		j = GetRand(17);
 	}
 	else if (Get_Wave() <= 21 || Get_Wave() >= 49 && Get_Wave() <= 51)
 	{
-		j = GetRand(21);
+		j = GetRand(20);
 	}
 	else if (Get_Wave() <= 24 || Get_Wave() >= 52)
 	{
-		j = GetRand(24);
+		j = GetRand(23);
 	}
 			
 
@@ -333,9 +389,9 @@ void Enemy_Create(int i)
 		}
 		break;
 
-	case 0:
-	case 1:
-	case 2:
+	case 15:
+	case 16:
+	case 17:
 		enemy[i].type = E_STRAIGHT;
 		if (Get_Wave() >= 30)
 		{
@@ -367,6 +423,7 @@ void Enemy_Create(int i)
 	case 22:
 	case 23:
 		enemy[i].type = E_ZIGZAG;
+		enemy[i].random = 0;
 		if (Get_Wave() >= 30)
 		{
 			enemy[i].HP = 6;
@@ -532,6 +589,29 @@ void Enemy_Move(int k,int skil,int skilnum)
 				{
 					enemy[k].waitcount = 4;
 				}
+			}
+			break;
+
+		case E_ZIGZAG:
+			if (enemy[k].random == 0)
+			{
+				if (check_overlap((enemy[k].EnemyX / TroutSize + 1), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+				{
+					Enemy_MoveField();
+					enemy[k].EnemyY += TroutSize;
+					enemy[k].EnemyX += TroutSize;
+				}
+				enemy[k].random = 1;
+			}
+			else
+			{
+				if (check_overlap((enemy[k].EnemyX / TroutSize - 1), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+				{
+					Enemy_MoveField();
+					enemy[k].EnemyY += TroutSize;
+					enemy[k].EnemyX -= TroutSize;
+				}
+				enemy[k].random = 0;
 			}
 			break;
 		default:

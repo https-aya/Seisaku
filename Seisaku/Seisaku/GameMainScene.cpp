@@ -15,6 +15,7 @@ int AttackRange_Image;
 int AttackSpeed_Image;
 int AttackDamage_Image;
 int Skil_Image;
+int lockimage;
 
 int GameMainScene_Initialize()
 {
@@ -33,7 +34,10 @@ int GameMainScene_Initialize()
 	case 1:
 		Skil_Image = LoadGraph("image/SkillTimeStop.png");
 		break;
+	case 2:
+		Skil_Image = LoadGraph("image/SkilTarget.png");
 	}
+	lockimage = LoadGraph("image/SkillLock.png");
 	Castle_Initialize();
 	Player_Initialize();
 	Enemy_Initialize();
@@ -51,8 +55,15 @@ void GameMainScene_Update()
 		Castle_Update();
 		Skil_Update();
 		GameMainScene_Draw();
-		DrawFormatString(800, 200, 0xffffff, "%d", Get_Score(), TRUE);
-		DrawFormatString(800, 240, 0xffffff, "%d", WaveCount, TRUE);
+		DrawFormatString(500, 80, 0xffffff, "SCORE", TRUE);
+		DrawFormatString(500, 100, 0xffffff, "%d", Get_Score(), TRUE);
+		DrawFormatString(500, 120, 0xffffff, "WAVE", TRUE);
+		DrawFormatString(500, 140, 0xffffff, "%d", WaveCount, TRUE);
+		DrawGraph(500, 400, Skil_Image, FALSE);
+		if (Get_SkilSpan() > 0)
+		{
+			DrawGraph(500, 400, lockimage, TRUE);
+		}
 		if (GetEnemyattack_count() + Get_enemykill() >= MAX_ENEMY * Get_Wave())
 		{
 			WaveCount++;
@@ -116,5 +127,4 @@ void GameMainScene_Draw()
 	{
 		DrawGraph(550 + (25 * i), 310, Star_Y, FALSE);
 	}
-	DrawFormatString(500, 400, 0xffffff, "%d", Get_enemycount());
 }

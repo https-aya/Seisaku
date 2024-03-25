@@ -2,6 +2,7 @@
 
 void Skil_Initialize();				//初期化処理
 void Skil_Update();					//更新処理
+void Skil_Draw();					//描画処理
 void Skil_On();						//スキルオン
 void Skil_Off();					//スキルオフ
 int GetSkil();						//スキル発動取得処理

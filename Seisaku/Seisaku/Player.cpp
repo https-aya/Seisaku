@@ -278,3 +278,8 @@ int Get_play()
 {
 	return play;
 }
+
+int Get_SkilSpan()
+{
+	return skilspan;
+}

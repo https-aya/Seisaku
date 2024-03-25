@@ -21,3 +21,4 @@ int Get_ADLv();
 int Get_PLv();
 void play_change(int n);
 int Get_play();
+int Get_SkilSpan();
