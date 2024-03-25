@@ -15,6 +15,7 @@ struct EnemyPattern
 	float EnemyX;
 	float EnemyY;
 	int Wait;
+	int waitcount;
 	int random;
 	int HP;
 	float enemy_vector_X;
@@ -107,15 +108,30 @@ void Enemy_Update()
 							{
 								CastleHit(k);
 								enemy[k].Wait = 0;
-								break;
 							}
+							break;
+						case E_STRAIGHT:
+							if (enemy[k].waitcount <= 0)
+							{
+								if (enemy[k].Wait > (WaitTime / 2) - (2 * Get_Wave()))
+								{
+									CastleHit(k);
+									enemy[k].Wait = 0;
+								}
+							}
+							else if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
+							{
+								enemy[k].waitcount--;
+								enemy[k].Wait = 0;
+							}
+							break;
 						default:
 							if (enemy[k].Wait > WaitTime - (2 * Get_Wave()))
 							{
 								CastleHit(k);
 								enemy[k].Wait = 0;
-								break;
 							}
+							break;
 						}
 					}
 				}
@@ -150,7 +166,7 @@ void Enemy_Draw()
 				}
 
 			case E_QUICK:
-				if (enemy[k].HP > 1)
+				if (enemy[k].HP  > 1)
 				{
 					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xfedcba, TRUE);
 					break;
@@ -165,17 +181,37 @@ void Enemy_Draw()
 				switch (enemy[k].HP)
 				{
 				case 3:
+				case 6:
 					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x123456, TRUE);
 					break;
 				case 2:
+				case 5:
 					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x654321, TRUE);
 					break;
 				case 1:
+				case 4:
 					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xabcdef, TRUE);
 					break;
 				}
 				break;
 
+			case E_STRAIGHT:
+				switch (enemy[k].HP)
+				{
+				case 3:
+				case 6:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x558386, TRUE);
+					break;
+				case 2:
+				case 5:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0xad5c7e6, TRUE);
+					break;
+				case 1:
+				case 4:
+					DrawCircleAA(enemy[k].EnemyX, enemy[k].EnemyY, TroutSize / 2, 100, 0x88aee5d, TRUE);
+					break;
+				}
+				break;
 			case E_BOME:
 				switch (enemy[k].HP)
 				{
@@ -297,16 +333,18 @@ void Enemy_Create(int i)
 		}
 		break;
 
-	case 15:
-	case 16:
-	case 17:
+	case 0:
+	case 1:
+	case 2:
 		enemy[i].type = E_STRAIGHT;
 		if (Get_Wave() >= 30)
 		{
+			enemy[i].waitcount = 2;
 			enemy[i].HP = 6;
 		}
 		else
 		{
+			enemy[i].waitcount = 4;
 			enemy[i].HP = 3;
 		}
 		break;
@@ -478,6 +516,24 @@ void Enemy_Move(int k,int skil,int skilnum)
 				}
 			}
 
+		case E_STRAIGHT:
+			if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
+			{
+				Enemy_MoveField();
+				enemy[k].EnemyY += TroutSize;
+			}
+			else
+			{
+				if (Get_Wave() >= 30)
+				{
+					enemy[k].waitcount = 2;
+				}
+				else
+				{
+					enemy[k].waitcount = 4;
+				}
+			}
+			break;
 		default:
 			if (check_overlap((enemy[k].EnemyX / TroutSize), (enemy[k].EnemyY / TroutSize) + 1) == TRUE)
 			{
